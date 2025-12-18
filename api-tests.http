@@ -1,0 +1,79 @@
+### GunaasoNepal API Tests
+### Use REST Client extension in VS Code (completely free)
+
+@baseUrl = http://localhost:3000
+@trackingId = GN-2025-XXXXXX
+
+### ============================================
+### 1. Get All Categories
+GET {{baseUrl}}/api/categories
+
+### 2. Get Categories (Nepali)
+GET {{baseUrl}}/api/categories?language=ne
+
+### ============================================
+### 3. Submit Anonymous Complaint
+POST {{baseUrl}}/api/complaints/submit
+Content-Type: application/json
+
+{
+  "submission_type": "anonymous",
+  "title": "Poor road conditions causing accidents in Ward 5",
+  "description": "The main road in Ward 5 has multiple large potholes that have not been repaired for over 6 months. Several accidents have occurred. Citizens have complained to the ward office multiple times with no action taken. The road condition is particularly dangerous during monsoon season.",
+  "category": "infrastructure",
+  "location": {
+    "province": "Bagmati",
+    "district": "Kathmandu",
+    "municipality": "Kathmandu Metropolitan City",
+    "ward": "5",
+    "details": "Main road near Ratna Park intersection"
+  },
+  "is_public": true,
+  "language": "en"
+}
+
+### 4. Submit Pseudonymous Complaint
+POST {{baseUrl}}/api/complaints/submit
+Content-Type: application/json
+
+{
+  "submission_type": "pseudonymous",
+  "pseudonym": "ConcernedCitizen123",
+  "title": "Bribery at land registration office",
+  "description": "Officials at the land registration office in Kathmandu are demanding bribes to process legitimate land registration applications. Multiple citizens have been asked to pay 5000 NPR extra to get their documents processed within reasonable time. Without paying, applications are deliberately delayed for months.",
+  "category": "corruption",
+  "location": {
+    "province": "Bagmati",
+    "district": "Kathmandu",
+    "municipality": "Kathmandu Metropolitan City"
+  },
+  "is_sensitive": true,
+  "language": "en",
+  "contact": {
+    "email": "concerned@example.com"
+  }
+}
+
+### ============================================
+### 5. Track Complaint (replace tracking_id with actual one from step 3)
+GET {{baseUrl}}/api/complaints/track?tracking_id={{trackingId}}
+
+### 6. List All Complaints
+GET {{baseUrl}}/api/complaints/list
+
+### 7. List Complaints by Category
+GET {{baseUrl}}/api/complaints/list?category=corruption&page=1&limit=10
+
+### 8. List Complaints by District
+GET {{baseUrl}}/api/complaints/list?district=Kathmandu&sort_by=created_at&sort_order=desc
+
+### ============================================
+### 9. List All Public Projects
+GET {{baseUrl}}/api/projects/list
+
+### 10. List Projects by District
+GET {{baseUrl}}/api/projects/list?district=Kathmandu&status=ongoing
+
+### ============================================
+### 11. Get Platform Statistics
+GET {{baseUrl}}/api/stats
