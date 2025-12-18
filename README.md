@@ -12,8 +12,6 @@ This guide explains **exactly how to contribute** to the project using Git & Git
 - ✅ Use **Pull Requests** to submit work
 - ✅ Ask before merging
 
-This keeps the project safe and conflict-free.
-
 --- 
 
 ## 2️⃣ Clone the Repository (One-Time Setup)
