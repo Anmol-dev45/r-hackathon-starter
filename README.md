@@ -14,7 +14,7 @@ This guide explains **exactly how to contribute** to the project using Git & Git
 
 This keeps the project safe and conflict-free.
 
----
+--- 
 
 ## 2️⃣ Clone the Repository (One-Time Setup)
 
