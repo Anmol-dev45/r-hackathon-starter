@@ -1,162 +1,108 @@
-// GunaasoNepal Home Page
+// GunaasoNepal Dashboard Page
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
-export default function HomePage() {
+export default function DashboardPage() {
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 to-background px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-5xl text-center">
-          <h1 className="mb-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            गुनासो नेपाल
-            <span className="mt-2 block text-primary">GunaasoNepal</span>
-          </h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            Empowering citizens to report governance issues, track complaints
-            transparently, and hold authorities accountable.
-          </p>
-          <p className="mx-auto mb-10 max-w-2xl text-sm text-muted-foreground">
-            नागरिकहरूलाई शासकीय समस्याहरू रिपोर्ट गर्न, गुनासोहरू पारदर्शी रूपमा ट्र्याक गर्न,
-            र अधिकारीहरूलाई जवाफदेही बनाउन सशक्तीकरण।
-          </p>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/complaint">
-              <Button size="lg" className="w-full sm:w-auto">
-                📝 Submit Complaint
-              </Button>
-            </Link>
-            <Link href="/track">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                🔍 Track Complaint
-              </Button>
-            </Link>
-          </div>
-          <p className="mt-6 text-sm text-muted-foreground">
-            🔒 Anonymous reporting allowed • No login required
-          </p>
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white text-primary h-screen p-6 flex flex-col shadow-lg">
+        <h1 className="mb-10 text-2xl font-bold">GunaasoNepal</h1>
+        <nav className="flex flex-col gap-4">
+          <Link href="/dashboard" className="hover:text-secondary">Dashboard</Link>
+          <Link href="/complaint" className="hover:text-secondary">Submit Complaint</Link>
+          <Link href="/track" className="hover:text-secondary">Track Complaint</Link>
+          <Link href="/categories" className="hover:text-secondary">Categories</Link>
+          <Link href="/settings" className="hover:text-secondary">Settings</Link>
+        </nav>
+        <div className="mt-auto text-sm text-gray-400">
+          © 2025 GunaasoNepal
         </div>
-      </section>
+      </aside>
 
-      {/* Why Use GunaasoNepal */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-foreground">
-            Why Use GunaasoNepal?
-          </h2>
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="rounded-lg border bg-card p-6 text-center shadow-sm">
-              <div className="mb-4 text-4xl">🔒</div>
-              <h3 className="mb-2 font-semibold">Safe & Anonymous</h3>
-              <p className="text-sm text-muted-foreground">
-                Report issues anonymously or with your identity. Your privacy is
-                protected.
-              </p>
-            </div>
-            <div className="rounded-lg border bg-card p-6 text-center shadow-sm">
-              <div className="mb-4 text-4xl">📊</div>
-              <h3 className="mb-2 font-semibold">Transparent Tracking</h3>
-              <p className="text-sm text-muted-foreground">
-                Track your complaint status anytime with a unique tracking ID.
-              </p>
-            </div>
-            <div className="rounded-lg border bg-card p-6 text-center shadow-sm">
-              <div className="mb-4 text-4xl">⚖️</div>
-              <h3 className="mb-2 font-semibold">Accountability</h3>
-              <p className="text-sm text-muted-foreground">
-                Public complaints create transparency and encourage action.
-              </p>
-            </div>
+      {/* Main Content */}
+      <main className="flex-1 p-6">
+        {/* Header */}
+        <div className="mb-8 flex justify-between items-center">
+          <h2 className="text-3xl font-bold text-gray-800">Dashboard</h2>
+          <Button size="sm" className="bg-primary text-white hover:bg-primary/90">New Complaint</Button>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid gap-6 md:grid-cols-4 mb-8">
+          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm text-center">
+            <div className="text-3xl mb-2">📝</div>
+            <h3 className="font-semibold text-gray-700">Total Complaints</h3>
+            <p className="text-gray-500">1,245</p>
+          </div>
+          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm text-center">
+            <div className="text-3xl mb-2">✅</div>
+            <h3 className="font-semibold text-gray-700">Resolved</h3>
+            <p className="text-gray-500">830</p>
+          </div>
+          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm text-center">
+            <div className="text-3xl mb-2">⌛</div>
+            <h3 className="font-semibold text-gray-700">Pending</h3>
+            <p className="text-gray-500">415</p>
+          </div>
+          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm text-center">
+            <div className="text-3xl mb-2">🔍</div>
+            <h3 className="font-semibold text-gray-700">In Review</h3>
+            <p className="text-gray-500">50</p>
           </div>
         </div>
-      </section>
 
-      {/* Complaint Categories */}
-      <section className="bg-muted/30 px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="mb-8 text-center text-3xl font-bold text-foreground">
-            What Can You Report?
-          </h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-              <div
-                key={category.key}
-                className="flex items-center gap-3 rounded-lg border bg-card p-4 transition-shadow hover:shadow-md"
-              >
-                <div className="text-2xl">{category.icon}</div>
-                <div>
-                  <h4 className="font-medium">{category.name}</h4>
-                  <p className="text-xs text-muted-foreground">{category.nameNe}</p>
-                </div>
-              </div>
-            ))}
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <h3 className="mb-4 text-xl font-semibold text-gray-800">Quick Actions</h3>
+          <div className="flex flex-wrap gap-4">
+            <Button size="lg" className="flex-1 sm:flex-auto bg-primary text-white hover:bg-primary/90">Submit Complaint</Button>
+            <Button size="lg" variant="outline" className="flex-1 sm:flex-auto border-primary text-primary hover:bg-primary/10">Track Complaint</Button>
+            <Button size="lg" variant="secondary" className="flex-1 sm:flex-auto bg-secondary text-white hover:bg-secondary/90">Upload Evidence</Button>
           </div>
         </div>
-      </section>
 
-      {/* How It Works */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-foreground">
-            How It Works
-          </h2>
-          <div className="grid gap-8 md:grid-cols-4">
-            {steps.map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="mb-4 mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-2xl font-bold text-primary-foreground">
-                  {index + 1}
-                </div>
-                <h3 className="mb-2 font-semibold">{step.title}</h3>
-                <p className="text-sm text-muted-foreground">{step.description}</p>
-              </div>
-            ))}
+        {/* Recent Complaints Table */}
+        <div>
+          <h3 className="mb-4 text-xl font-semibold text-gray-800">Recent Complaints</h3>
+          <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+            <table className="w-full text-left border-collapse">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-2 text-gray-600">ID</th>
+                  <th className="px-4 py-2 text-gray-600">Category</th>
+                  <th className="px-4 py-2 text-gray-600">Status</th>
+                  <th className="px-4 py-2 text-gray-600">Submitted By</th>
+                  <th className="px-4 py-2 text-gray-600">Date</th>
+                  <th className="px-4 py-2 text-gray-600">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentComplaints.map((c) => (
+                  <tr key={c.id} className="border-t hover:bg-gray-100">
+                    <td className="px-4 py-2 text-gray-700">{c.id}</td>
+                    <td className="px-4 py-2 text-gray-700">{c.category}</td>
+                    <td className="px-4 py-2 text-gray-700">{c.status}</td>
+                    <td className="px-4 py-2 text-gray-700">{c.user}</td>
+                    <td className="px-4 py-2 text-gray-700">{c.date}</td>
+                    <td className="px-4 py-2">
+                      <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary/10">View</Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-primary px-4 py-16 text-primary-foreground sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="mb-4 text-3xl font-bold">Ready to Make a Difference?</h2>
-          <p className="mb-8 text-lg opacity-90">
-            Your voice matters. Report governance issues and help build a more
-            accountable Nepal.
-          </p>
-          <Link href="/complaint">
-            <Button size="lg" variant="secondary">
-              Submit Your Complaint Now
-            </Button>
-          </Link>
-        </div>
-      </section>
+      </main>
     </div>
   );
 }
 
-const categories = [
-  { key: 'corruption', name: 'Corruption', nameNe: 'भ्रष्टाचार', icon: '⚠️' },
-  { key: 'infrastructure', name: 'Infrastructure', nameNe: 'पूर्वाधार', icon: '🏗️' },
-  { key: 'service_delivery', name: 'Service Delivery', nameNe: 'सेवा प्रवाह', icon: '🏢' },
-  { key: 'health_services', name: 'Health Services', nameNe: 'स्वास्थ्य सेवा', icon: '🏥' },
-  { key: 'education', name: 'Education', nameNe: 'शिक्षा', icon: '📚' },
-  { key: 'rti_request', name: 'Right to Information', nameNe: 'सूचनाको हक', icon: 'ℹ️' },
-];
-
-const steps = [
-  {
-    title: 'Submit',
-    description: 'Fill out a simple form with your complaint details',
-  },
-  {
-    title: 'Track',
-    description: 'Get a unique tracking ID to monitor progress',
-  },
-  {
-    title: 'Evidence',
-    description: 'Upload photos, documents, or audio as proof',
-  },
-  {
-    title: 'Resolution',
-    description: 'Watch as your complaint is reviewed and addressed',
-  },
+const recentComplaints = [
+  { id: 'C1021', category: 'Corruption', status: 'Pending', user: 'Anonymous', date: '2025-12-18' },
+  { id: 'C1022', category: 'Infrastructure', status: 'Resolved', user: 'Ram K.', date: '2025-12-17' },
+  { id: 'C1023', category: 'Health Services', status: 'In Review', user: 'Sita P.', date: '2025-12-16' },
+  { id: 'C1024', category: 'Education', status: 'Pending', user: 'Anonymous', date: '2025-12-15' },
+  { id: 'C1025', category: 'RTI Request', status: 'Resolved', user: 'Hari B.', date: '2025-12-14' },
 ];

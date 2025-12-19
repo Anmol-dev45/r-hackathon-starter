@@ -11,6 +11,7 @@ import { LoadingInline } from '@/components/ui/loading';
 import { FileUpload } from '@/components/file-upload';
 import type { SubmissionType, ComplaintCategory } from '@/lib/types/database';
 import { Label } from '@/components/ui/label';
+import { Shield, User, BadgeCheck, CheckCircle2 } from 'lucide-react';
 
 const NEPAL_DISTRICTS = [
   'Kathmandu', 'Lalitpur', 'Bhaktapur', 'Kavrepalanchok', 'Dhading',
@@ -145,43 +146,39 @@ export default function ComplaintFormPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background px-4 py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-blue-50 px-4 py-16 sm:px-8 lg:px-16">
       <div className="mx-auto max-w-2xl">
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="mb-2 text-3xl font-bold text-foreground">Submit a Complaint</h1>
-          <p className="text-muted-foreground">
-            Report governance issues safely and transparently
-          </p>
+        <div className="mb-12 text-center">
+          <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-foreground font-merriweather">Submit a Complaint</h1>
+          <p className="text-muted-foreground">Report governance issues safely and transparently</p>
         </div>
 
         {/* Progress Indicator */}
         {step < 4 && (
           <div className="mb-8">
-            <div className="flex items-center justify-between">
-              {[1, 2, 3].map((s) => (
-                <div key={s} className="flex flex-1 items-center">
-                  <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-full border-2 font-semibold transition-colors ${s <= step
-                        ? 'border-primary bg-primary text-primary-foreground'
-                        : 'border-border bg-background text-muted-foreground'
-                      }`}
-                  >
-                    {s}
-                  </div>
-                  {s < 3 && (
-                    <div
-                      className={`h-1 flex-1 transition-colors ${s < step ? 'bg-primary' : 'bg-border'
-                        }`}
-                    />
-                  )}
+            <div className="flex flex-col items-center w-full">
+              <div className="flex w-full max-w-md items-center mx-auto">
+                {/* Step 1 */}
+                <div className="flex flex-col items-center flex-1">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full border-2 font-semibold transition-colors ${step >= 1 ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background text-muted-foreground'}`}>{1}</div>
+                  <span className="mt-2 text-xs text-muted-foreground font-medium">Identity</span>
                 </div>
-              ))}
-            </div>
-            <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-              <span>Identity</span>
-              <span>Details</span>
-              <span>Evidence</span>
+                {/* Line 1-2 */}
+                <div className="flex-1 h-1 bg-border mx-2" />
+                {/* Step 2 */}
+                <div className="flex flex-col items-center flex-1">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full border-2 font-semibold transition-colors ${step >= 2 ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background text-muted-foreground'}`}>{2}</div>
+                  <span className="mt-2 text-xs text-muted-foreground font-medium">Details</span>
+                </div>
+                {/* Line 2-3 */}
+                <div className="flex-1 h-1 bg-border mx-2" />
+                {/* Step 3 */}
+                <div className="flex flex-col items-center flex-1">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full border-2 font-semibold transition-colors ${step >= 3 ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background text-muted-foreground'}`}>{3}</div>
+                  <span className="mt-2 text-xs text-muted-foreground font-medium">Evidence</span>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -195,9 +192,9 @@ export default function ComplaintFormPage() {
 
         {/* Step 1: Identity Choice */}
         {step === 1 && (
-          <Card className="p-6">
-            <h2 className="mb-6 text-xl font-semibold">Choose Identity Type</h2>
-            <div className="space-y-4">
+          <Card className="p-8 space-y-8">
+            <h2 className="mb-8 text-2xl font-bold tracking-tight text-foreground font-merriweather">Choose Identity Type</h2>
+            <div className="space-y-6">
               {/* Anonymous */}
               <button
                 type="button"
@@ -208,7 +205,9 @@ export default function ComplaintFormPage() {
                   }`}
               >
                 <div className="flex items-start gap-3">
-                  <div className="text-2xl">🔒</div>
+                  <div className="text-2xl">
+                    <Shield className="text-black w-7 h-7" aria-label="Anonymous" />
+                  </div>
                   <div className="flex-1">
                     <h3 className="font-semibold">Anonymous</h3>
                     <p className="text-sm text-muted-foreground">
@@ -234,7 +233,9 @@ export default function ComplaintFormPage() {
                   }`}
               >
                 <div className="flex items-start gap-3">
-                  <div className="text-2xl">👤</div>
+                  <div className="text-2xl">
+                    <User className="text-black w-7 h-7" aria-label="Pseudonymous" />
+                  </div>
                   <div className="flex-1">
                     <h3 className="font-semibold">Pseudonymous</h3>
                     <p className="text-sm text-muted-foreground">
@@ -251,7 +252,7 @@ export default function ComplaintFormPage() {
               </button>
 
               {submissionType === 'pseudonymous' && (
-                <div className="ml-11 mt-2">
+                <div className="ml-11 mt-4">
                   <Label htmlFor="pseudonym">Choose a pseudonym</Label>
                   <Input
                     id="pseudonym"
@@ -274,7 +275,9 @@ export default function ComplaintFormPage() {
                   }`}
               >
                 <div className="flex items-start gap-3">
-                  <div className="text-2xl">✅</div>
+                  <div className="text-2xl">
+                    <BadgeCheck className="text-black w-7 h-7" aria-label="Verified" />
+                  </div>
                   <div className="flex-1">
                     <h3 className="font-semibold">Verified (Login Required)</h3>
                     <p className="text-sm text-muted-foreground">
@@ -291,7 +294,7 @@ export default function ComplaintFormPage() {
               </button>
             </div>
 
-            <Button onClick={nextStep} className="mt-6 w-full">
+            <Button onClick={nextStep} className="mt-8 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold">
               Continue →
             </Button>
           </Card>
@@ -299,9 +302,9 @@ export default function ComplaintFormPage() {
 
         {/* Step 2: Complaint Details */}
         {step === 2 && (
-          <Card className="p-6">
-            <h2 className="mb-6 text-xl font-semibold">Complaint Details</h2>
-            <div className="space-y-4">
+          <Card className="p-8 space-y-8">
+            <h2 className="mb-8 text-2xl font-bold tracking-tight text-foreground font-merriweather">Complaint Details</h2>
+            <div className="space-y-8">
               {/* Category */}
               <div>
                 <Label htmlFor="category">Category *</Label>
@@ -337,9 +340,7 @@ export default function ComplaintFormPage() {
 
               {/* Description */}
               <div>
-                <Label htmlFor="description">
-                  Detailed Description * (min 50 characters)
-                </Label>
+                <Label htmlFor="description">Detailed Description * (min 50 characters)</Label>
                 <textarea
                   id="description"
                   placeholder="Provide detailed information about the issue..."
@@ -354,7 +355,7 @@ export default function ComplaintFormPage() {
               </div>
 
               {/* Location */}
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="district">District</Label>
                   <select
@@ -384,7 +385,7 @@ export default function ComplaintFormPage() {
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="ward">Ward Number</Label>
                   <Input
@@ -410,7 +411,7 @@ export default function ComplaintFormPage() {
               </div>
 
               {/* Contact (Optional) */}
-              <div className="rounded-lg border p-4">
+              <div className="rounded-lg border p-6 mt-4">
                 <h3 className="mb-3 font-medium">Contact Information (Optional)</h3>
                 <p className="mb-3 text-xs text-muted-foreground">
                   Provide contact details if you want to be reached for updates. This will be
@@ -451,13 +452,11 @@ export default function ComplaintFormPage() {
                   onChange={(e) => setIsPublic(e.target.checked)}
                   className="h-4 w-4 rounded border-border"
                 />
-                <Label htmlFor="is-public" className="cursor-pointer">
-                  Make this complaint public
-                </Label>
+                <Label htmlFor="is-public" className="cursor-pointer">Make this complaint public</Label>
               </div>
             </div>
 
-            <div className="mt-6 flex gap-3">
+            <div className="mt-10 flex gap-6">
               <Button variant="outline" onClick={() => setStep(1)} className="flex-1">
                 ← Back
               </Button>
@@ -470,23 +469,19 @@ export default function ComplaintFormPage() {
 
         {/* Step 3: Evidence Upload */}
         {step === 3 && (
-          <Card className="p-6">
-            <h2 className="mb-2 text-xl font-semibold">Add Evidence (Optional)</h2>
-            <p className="mb-6 text-sm text-muted-foreground">
+          <Card className="p-8 space-y-8">
+            <h2 className="mb-6 text-2xl font-bold tracking-tight text-foreground font-merriweather">Add Evidence (Optional)</h2>
+            <p className="mb-8 text-sm text-muted-foreground">
               Upload photos, documents, audio, or video evidence to support your complaint
             </p>
 
             <FileUpload onFilesChange={setFiles} />
 
-            <div className="mt-6 flex gap-3">
+            <div className="mt-10 flex gap-6">
               <Button variant="outline" onClick={() => setStep(2)} className="flex-1">
                 ← Back
               </Button>
-              <Button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="flex-1"
-              >
+              <Button onClick={handleSubmit} disabled={loading} className="flex-1">
                 {loading ? <LoadingInline message="Submitting..." /> : 'Submit Complaint'}
               </Button>
             </div>
@@ -495,20 +490,18 @@ export default function ComplaintFormPage() {
 
         {/* Step 4: Success */}
         {step === 4 && (
-          <Card className="p-8 text-center">
-            <div className="mb-6 text-6xl">✅</div>
-            <h2 className="mb-4 text-2xl font-bold text-green-600">
-              Complaint Submitted Successfully!
-            </h2>
-            <div className="mb-6 rounded-lg bg-muted p-4">
+          <Card className="p-12 text-center space-y-8">
+            <CheckCircle2 className="mx-auto mb-8 text-green-500" size={64} aria-label="Success" />
+            <h2 className="text-2xl font-bold tracking-tight text-green-600 mb-6 font-merriweather">Complaint Submitted Successfully!</h2>
+            <div className="rounded-lg bg-muted p-6 mb-8">
               <p className="mb-2 text-sm font-medium">Your Tracking ID:</p>
               <p className="text-2xl font-mono font-bold text-primary">{trackingId}</p>
             </div>
-            <p className="mb-6 text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground mb-8">
               Save this tracking ID to monitor your complaint status. You can track it anytime
               without logging in.
             </p>
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex flex-col gap-4 sm:flex-row">
               <Button
                 variant="outline"
                 onClick={() => router.push(`/track?id=${trackingId}`)}
