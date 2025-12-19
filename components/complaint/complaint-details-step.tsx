@@ -123,21 +123,24 @@ export function ComplaintDetailsStep({
     };
 
     return (
-        <Card className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
-            <h2 className="mb-2 sm:mb-4 text-xl sm:text-2xl font-bold tracking-tight text-foreground font-merriweather">
-                Complaint Details
-            </h2>
+        <Card className="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8 border-gray-200 shadow-lg">
+            <div>
+                <h2 className="mb-2 text-xl sm:text-2xl font-bold text-gray-900">
+                    Tell us about your complaint
+                </h2>
+                <p className="text-sm text-gray-600">Provide details so we can help resolve your issue</p>
+            </div>
 
             {/* Title */}
             <div className="space-y-2">
-                <Label htmlFor="title">Title *</Label>
+                <Label htmlFor="title" className="text-base font-semibold">What's the problem? (Short summary) *</Label>
                 <Input
                     id="title"
                     type="text"
-                    placeholder="Brief summary of your complaint"
+                    placeholder="Example: Broken street light on Main Road for 2 weeks"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className={errors.title ? 'border-red-500' : ''}
+                    className={errors.title ? 'border-red-500 text-base' : 'text-base'}
                 />
                 <div className="flex justify-between text-xs">
                     {errors.title && <span className="text-red-500">{errors.title}</span>}
@@ -149,14 +152,15 @@ export function ComplaintDetailsStep({
 
             {/* Description */}
             <div className="space-y-2">
-                <Label htmlFor="description">Description *</Label>
+                <Label htmlFor="description" className="text-base font-semibold">Describe the problem in detail *</Label>
+                <p className="text-sm text-gray-600">Explain what happened, when it happened, and who was involved</p>
                 <Textarea
                     id="description"
-                    placeholder="Provide detailed information about the issue..."
+                    placeholder="Tell us the full story... Include dates, times, names (if known), and any details that will help us understand and resolve your problem."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     rows={6}
-                    className={errors.description ? 'border-red-500' : ''}
+                    className={errors.description ? 'border-red-500 text-base' : 'text-base'}
                 />
                 <div className="flex justify-between text-xs">
                     {errors.description && <span className="text-red-500">{errors.description}</span>}
@@ -174,15 +178,19 @@ export function ComplaintDetailsStep({
 
             {/* Location Toggle */}
             <div className="space-y-4 border-t pt-4">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-start space-x-3">
                     <Checkbox
                         id="includeLocation"
                         checked={includeLocation}
                         onCheckedChange={(checked) => setIncludeLocation(checked as boolean)}
+                        className="mt-1"
                     />
-                    <Label htmlFor="includeLocation" className="cursor-pointer">
-                        Include location information (optional)
-                    </Label>
+                    <div>
+                        <Label htmlFor="includeLocation" className="cursor-pointer font-semibold">
+                            Add location where problem occurred (optional)
+                        </Label>
+                        <p className="text-xs text-gray-500 mt-1">Helps us forward to the right office</p>
+                    </div>
                 </div>
 
                 {includeLocation && (

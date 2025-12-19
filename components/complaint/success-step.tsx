@@ -32,17 +32,17 @@ export function SuccessStep({ trackingId, forwardedTo, onNewComplaint }: Success
                 <CheckCircle2 className="h-12 w-12 sm:h-16 sm:w-16 text-green-500" />
 
                 <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground font-merriweather">
-                    Complaint Submitted Successfully
+                    ✅ Your Complaint Has Been Submitted!
                 </h2>
 
                 <p className="text-muted-foreground">
-                    Your complaint has been received and is being processed
+                    We've received your complaint and will start working on it right away.
                 </p>
             </div>
 
             {/* Tracking ID */}
             <div className="space-y-2">
-                <h3 className="font-semibold text-sm sm:text-base">Your Tracking ID</h3>
+                <h3 className="font-semibold text-sm sm:text-base">🔍 Your Tracking Number</h3>
                 <div className="flex items-center gap-2 p-3 sm:p-4 bg-muted rounded-lg">
                     <code className="flex-1 font-mono text-sm sm:text-base md:text-lg break-all">{trackingId}</code>
                     <Button
@@ -59,18 +59,18 @@ export function SuccessStep({ trackingId, forwardedTo, onNewComplaint }: Success
                     </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                    Save this ID to track your complaint status
+                    💡 Save this number! You'll need it to check the status of your complaint.
                 </p>
             </div>
 
             {/* Forwarding Information */}
             {forwardedTo && (
                 <div className="space-y-2 border-t pt-4">
-                    <h3 className="font-semibold text-sm">Forwarded To</h3>
+                    <h3 className="font-semibold text-sm">📤 Sent To</h3>
                     <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                         <p className="font-medium">{forwardedTo.name}</p>
                         <p className="text-sm text-muted-foreground mt-1">
-                            Category: {forwardedTo.category}
+                            Type: {forwardedTo.category}
                         </p>
                     </div>
                 </div>
@@ -80,7 +80,7 @@ export function SuccessStep({ trackingId, forwardedTo, onNewComplaint }: Success
             <div className="flex flex-col gap-3 pt-2 sm:pt-4">
                 <Link href={`/track?id=${trackingId}`} className="w-full">
                     <Button className="w-full h-11 sm:h-12 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white touch-manipulation">
-                        Track Complaint <ExternalLink className="ml-2 h-4 w-4" />
+                        Check Status <ExternalLink className="ml-2 h-4 w-4" />
                     </Button>
                 </Link>
 

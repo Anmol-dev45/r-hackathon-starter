@@ -73,10 +73,10 @@ export function CategorySelector({ value, onChange }: CategorySelectorProps) {
 
     return (
         <div className="space-y-2">
-            <Label htmlFor="category">Complaint Category *</Label>
+            <Label htmlFor="category">📂 What type of problem is this? *</Label>
             <Select value={value} onValueChange={onChange}>
                 <SelectTrigger id="category">
-                    <SelectValue placeholder="Select a category" />
+                    <SelectValue placeholder="Choose the category that best matches your complaint" />
                 </SelectTrigger>
                 <SelectContent>
                     {COMPLAINT_CATEGORIES.map((category) => (
