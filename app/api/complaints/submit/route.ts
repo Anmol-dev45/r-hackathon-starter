@@ -9,6 +9,8 @@ import type {
     ErrorResponse,
 } from '@/lib/types/database';
 import { validateComplaintSubmission } from '@/lib/utils/validation';
+import { forwardComplaint } from '@/lib/utils/complaint-forwarding';
+import { addForwarding } from '@/lib/utils/forwarding-storage';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(
@@ -107,12 +109,39 @@ export async function POST(
             );
         }
 
+        // Auto-forward complaint to appropriate office based on category and location
+        const forwarding = forwardComplaint(
+            complaint.id,
+            body.category,
+            {
+                province: body.location?.province,
+                district: body.location?.district,
+                municipality: body.location?.municipality,
+            }
+        );
+
+        // Store the forwarding mapping
+        addForwarding(complaint.id, forwarding.officeId);
+
+        console.log('Complaint forwarded:', {
+            complaintId: complaint.id,
+            trackingId: complaint.tracking_id,
+            category: body.category,
+            location: body.location,
+            forwardedTo: forwarding.officeName,
+            officeId: forwarding.officeId,
+        });
+
         return NextResponse.json(
             {
                 success: true,
                 complaint_id: complaint.id,
                 tracking_id: complaint.tracking_id,
                 message: `Complaint submitted successfully. Your tracking ID is: ${complaint.tracking_id}`,
+                forwarding: {
+                    office_id: forwarding.officeId,
+                    office_name: forwarding.officeName,
+                },
             },
             { status: 201 }
         );
