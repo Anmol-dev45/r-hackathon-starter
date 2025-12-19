@@ -49,10 +49,10 @@ export function LocationSelector({
         <div className="space-y-4">
             {/* Province */}
             <div className="space-y-2">
-                <Label htmlFor="province">Province *</Label>
+                <Label htmlFor="province">🗺️ Province *</Label>
                 <Select value={province} onValueChange={onProvinceChange}>
                     <SelectTrigger id="province">
-                        <SelectValue placeholder="Select Province" />
+                        <SelectValue placeholder="Choose your province" />
                     </SelectTrigger>
                     <SelectContent>
                         {NEPAL_ADMINISTRATIVE_DATA.map((p) => (
@@ -67,10 +67,10 @@ export function LocationSelector({
             {/* District */}
             {province && (
                 <div className="space-y-2">
-                    <Label htmlFor="district">District *</Label>
+                    <Label htmlFor="district">🎆 District *</Label>
                     <Select value={district} onValueChange={onDistrictChange}>
                         <SelectTrigger id="district">
-                            <SelectValue placeholder="Select District" />
+                            <SelectValue placeholder="Choose your district" />
                         </SelectTrigger>
                         <SelectContent>
                             {districts.map((d) => (
@@ -86,10 +86,10 @@ export function LocationSelector({
             {/* Municipality */}
             {district && (
                 <div className="space-y-2">
-                    <Label htmlFor="municipality">Municipality *</Label>
+                    <Label htmlFor="municipality">🏘️ Municipality *</Label>
                     <Select value={municipality} onValueChange={onMunicipalityChange}>
                         <SelectTrigger id="municipality">
-                            <SelectValue placeholder="Select Municipality" />
+                            <SelectValue placeholder="Choose your municipality" />
                         </SelectTrigger>
                         <SelectContent>
                             {municipalities.map((m) => (
@@ -105,10 +105,10 @@ export function LocationSelector({
             {/* Ward */}
             {municipality && (
                 <div className="space-y-2">
-                    <Label htmlFor="ward">Ward *</Label>
+                    <Label htmlFor="ward">🏠 Ward Number *</Label>
                     <Select value={ward} onValueChange={onWardChange}>
                         <SelectTrigger id="ward">
-                            <SelectValue placeholder="Select Ward" />
+                            <SelectValue placeholder="Choose your ward" />
                         </SelectTrigger>
                         <SelectContent>
                             {Array.isArray(wards) && wards.map((w) => (

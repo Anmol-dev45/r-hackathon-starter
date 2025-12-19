@@ -20,10 +20,10 @@ export function EvidenceStep({ files, setFiles, onNext, onBack }: EvidenceStepPr
         <Card className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
             <div>
                 <h2 className="mb-2 text-xl sm:text-2xl font-bold tracking-tight text-foreground font-merriweather">
-                    Upload Evidence (Optional)
+                    📎 Add Supporting Files (Optional)
                 </h2>
                 <p className="text-sm sm:text-base text-muted-foreground">
-                    Add photos, documents, or videos that support your complaint
+                    Upload photos, documents, or videos that show the problem. This helps the authorities understand your complaint better.
                 </p>
             </div>
 
