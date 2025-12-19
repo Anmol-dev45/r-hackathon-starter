@@ -1,7 +1,7 @@
 'use client';
 
 // Complaint Submission Form - GunaasoNepal
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -40,6 +40,13 @@ export default function ComplaintFormPage() {
 
   // Form state
   const [submissionType, setSubmissionType] = useState<SubmissionType>('anonymous');
+
+  // Reset form when component mounts to prevent state caching
+  useEffect(() => {
+    setStep(1);
+    setError('');
+    setTrackingId('');
+  }, []);
   const [pseudonym, setPseudonym] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -52,7 +59,7 @@ export default function ComplaintFormPage() {
   const [contactPhone, setContactPhone] = useState('');
   const [isPublic, setIsPublic] = useState(true);
   const [files, setFiles] = useState<File[]>([]);
-
+  console.log(step)
   const handleSubmit = async () => {
     setLoading(true);
     setError('');
@@ -144,7 +151,7 @@ export default function ComplaintFormPage() {
       setStep(step + 1);
     }
   };
-
+  console.log(step)
   return (
     <div className="min-h-screen bg-blue-50 px-4 py-16 sm:px-8 lg:px-16">
       <div className="mx-auto max-w-2xl">
@@ -200,8 +207,8 @@ export default function ComplaintFormPage() {
                 type="button"
                 onClick={() => setSubmissionType('anonymous')}
                 className={`w-full rounded-lg border-2 p-4 text-left transition-colors ${submissionType === 'anonymous'
-                    ? 'border-primary bg-primary/5'
-                    : 'border-border hover:border-primary/50'
+                  ? 'border-primary bg-primary/5'
+                  : 'border-border hover:border-primary/50'
                   }`}
               >
                 <div className="flex items-start gap-3">
@@ -216,8 +223,8 @@ export default function ComplaintFormPage() {
                   </div>
                   <div
                     className={`h-5 w-5 rounded-full border-2 transition-colors ${submissionType === 'anonymous'
-                        ? 'border-primary bg-primary'
-                        : 'border-border'
+                      ? 'border-primary bg-primary'
+                      : 'border-border'
                       }`}
                   />
                 </div>
@@ -228,8 +235,8 @@ export default function ComplaintFormPage() {
                 type="button"
                 onClick={() => setSubmissionType('pseudonymous')}
                 className={`w-full rounded-lg border-2 p-4 text-left transition-colors ${submissionType === 'pseudonymous'
-                    ? 'border-primary bg-primary/5'
-                    : 'border-border hover:border-primary/50'
+                  ? 'border-primary bg-primary/5'
+                  : 'border-border hover:border-primary/50'
                   }`}
               >
                 <div className="flex items-start gap-3">
@@ -244,8 +251,8 @@ export default function ComplaintFormPage() {
                   </div>
                   <div
                     className={`h-5 w-5 rounded-full border-2 transition-colors ${submissionType === 'pseudonymous'
-                        ? 'border-primary bg-primary'
-                        : 'border-border'
+                      ? 'border-primary bg-primary'
+                      : 'border-border'
                       }`}
                   />
                 </div>
@@ -270,8 +277,8 @@ export default function ComplaintFormPage() {
                 type="button"
                 onClick={() => setSubmissionType('verified')}
                 className={`w-full rounded-lg border-2 p-4 text-left transition-colors ${submissionType === 'verified'
-                    ? 'border-primary bg-primary/5'
-                    : 'border-border hover:border-primary/50'
+                  ? 'border-primary bg-primary/5'
+                  : 'border-border hover:border-primary/50'
                   }`}
               >
                 <div className="flex items-start gap-3">
@@ -286,8 +293,8 @@ export default function ComplaintFormPage() {
                   </div>
                   <div
                     className={`h-5 w-5 rounded-full border-2 transition-colors ${submissionType === 'verified'
-                        ? 'border-primary bg-primary'
-                        : 'border-border'
+                      ? 'border-primary bg-primary'
+                      : 'border-border'
                       }`}
                   />
                 </div>
