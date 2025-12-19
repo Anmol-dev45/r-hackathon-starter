@@ -1,0 +1,106 @@
+# Test the Complaint Forwarding System
+
+### 1. Submit a corruption complaint from Bagmati Province
+POST http://localhost:3000/api/complaints/submit
+Content-Type: application/json
+
+{
+  "submission_type": "anonymous",
+  "title": "Corruption in road construction",
+  "description": "There is corruption in the road construction project in Kathmandu. Funds are being misused.",
+  "category": "corruption",
+  "location": {
+    "province": "Bagmati",
+    "district": "Kathmandu",
+    "municipality": "Kathmandu Metropolitan",
+    "ward": "10"
+  },
+  "is_public": true,
+  "language": "en"
+}
+
+###
+
+### 2. Submit a police misconduct complaint from Gandaki Province
+POST http://localhost:3000/api/complaints/submit
+Content-Type: application/json
+
+{
+  "submission_type": "pseudonymous",
+  "pseudonym": "ConcernedCitizen",
+  "title": "Police harassment",
+  "description": "Police officers are harassing local vendors without proper reason.",
+  "category": "police_misconduct",
+  "location": {
+    "province": "Gandaki",
+    "district": "Kaski"
+  },
+  "is_public": true,
+  "language": "en"
+}
+
+###
+
+### 3. Submit an education complaint from Province 1
+POST http://localhost:3000/api/complaints/submit
+Content-Type: application/json
+
+{
+  "submission_type": "anonymous",
+  "title": "Teacher absenteeism",
+  "description": "Teachers are frequently absent from the local school.",
+  "category": "education",
+  "location": {
+    "province": "Province 1",
+    "district": "Morang"
+  },
+  "is_public": true,
+  "language": "en"
+}
+
+###
+
+### 4. Submit an RTI request (no specific location needed)
+POST http://localhost:3000/api/complaints/submit
+Content-Type: application/json
+
+{
+  "submission_type": "anonymous",
+  "title": "Information request about budget",
+  "description": "I want to know how the annual budget for education was allocated.",
+  "category": "rti_request",
+  "is_public": true,
+  "language": "en"
+}
+
+###
+
+### 5. Submit a health services complaint from Lumbini Province
+POST http://localhost:3000/api/complaints/submit
+Content-Type: application/json
+
+{
+  "submission_type": "anonymous",
+  "title": "Poor hospital conditions",
+  "description": "The local hospital lacks basic medical supplies and equipment.",
+  "category": "health_services",
+  "location": {
+    "province": "Lumbini",
+    "district": "Rupandehi"
+  },
+  "is_public": true,
+  "language": "en"
+}
+
+###
+
+### 6. Get forwarding info for a specific complaint
+# Replace {complaint_id} with actual UUID from submission response
+GET http://localhost:3000/api/complaints/forwarding?complaint_id={complaint_id}
+
+###
+
+### 7. Get list of all forwarding mappings
+GET http://localhost:3000/api/complaints/forwarding/list
+
+###

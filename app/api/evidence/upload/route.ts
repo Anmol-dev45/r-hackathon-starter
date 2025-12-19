@@ -123,6 +123,13 @@ export async function POST(
         const storagePath = generateStoragePath(complaint.id, file.name);
 
         // Upload file to Supabase Storage
+        console.log('Attempting storage upload:', {
+            bucket: EVIDENCE_BUCKET,
+            path: storagePath,
+            fileSize: file.size,
+            contentType: file.type
+        });
+
         const fileBuffer = await file.arrayBuffer();
         const { data: uploadData, error: uploadError } = await supabase.storage
             .from(EVIDENCE_BUCKET)
@@ -133,16 +140,24 @@ export async function POST(
             });
 
         if (uploadError) {
-            console.error('Error uploading file:', uploadError);
+            console.error('Supabase storage upload error:', {
+                error: uploadError,
+                message: uploadError.message,
+                bucket: EVIDENCE_BUCKET,
+                path: storagePath
+            });
             return NextResponse.json(
                 {
                     success: false,
                     error: 'Upload error',
-                    message: 'Failed to upload file. Please try again.',
+                    message: `Failed to upload file: ${uploadError.message}`,
+                    details: uploadError,
                 },
                 { status: 500 }
             );
         }
+
+        console.log('File uploaded successfully to storage:', uploadData);
 
         // Get public URL
         const {
