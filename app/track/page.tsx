@@ -22,9 +22,9 @@ export default function TrackComplaintPage() {
 
 
     useEffect(() => {
-    setError('');
-    setTrackingId('');
-  }, []);
+        setError('');
+        setTrackingId('');
+    }, []);
 
     // Auto-load tracking details if trackingId is present in URL
     useEffect(() => {
@@ -82,23 +82,23 @@ export default function TrackComplaintPage() {
     };
 
     return (
-        <div className="min-h-screen bg-background px-4 py-12 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-background px-4 py-6 sm:py-8 md:py-12 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-3xl">
                 {/* Header */}
-                <div className="mb-8 text-center">
-                    <h1 className="mb-2 text-3xl font-bold text-foreground">
+                <div className="mb-6 sm:mb-8 text-center">
+                    <h1 className="mb-2 text-2xl sm:text-3xl font-bold text-foreground">
                         Track Your Complaint
                     </h1>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm sm:text-base text-muted-foreground">
                         Enter your tracking ID to view complaint status
                     </p>
                 </div>
 
                 {/* Search Form */}
-                <Card className="mb-8 p-6">
+                <Card className="mb-6 sm:mb-8 p-4 sm:p-6">
                     <form onSubmit={handleSearch} className="space-y-4">
                         <div>
-                            <label htmlFor="tracking-id" className="mb-2 block text-sm font-medium">
+                            <label htmlFor="tracking-id" className="mb-2 block text-sm sm:text-base font-medium">
                                 Tracking ID
                             </label>
                             <Input
@@ -114,7 +114,7 @@ export default function TrackComplaintPage() {
                                 Format: GN-YYYY-XXXXXX (e.g., GN-2025-A3B7F1)
                             </p>
                         </div>
-                        <Button type="submit" className="w-full" disabled={loading}>
+                        <Button type="submit" className="w-full h-11 sm:h-12 text-base sm:text-lg touch-manipulation" disabled={loading}>
                             {loading ? <LoadingInline message="Searching..." /> : '🔍 Track Complaint'}
                         </Button>
                     </form>
@@ -130,13 +130,13 @@ export default function TrackComplaintPage() {
                 {/* Results */}
                 {result && (
                     <>
-                        <div className="space-y-6">
+                        <div className="space-y-4 sm:space-y-6">
                             {/* Complaint Details */}
-                            <Card className="p-6">
-                                <div className="mb-4 flex items-start justify-between">
-                                    <div>
-                                        <h2 className="text-xl font-semibold">{result.complaint.title}</h2>
-                                        <p className="text-sm text-muted-foreground">
+                            <Card className="p-4 sm:p-6">
+                                <div className="mb-4 flex flex-col sm:flex-row items-start sm:justify-between gap-3">
+                                    <div className="flex-1 min-w-0">
+                                        <h2 className="text-lg sm:text-xl font-semibold break-words">{result.complaint.title}</h2>
+                                        <p className="text-xs sm:text-sm text-muted-foreground break-all">
                                             Tracking ID: {result.complaint.tracking_id}
                                         </p>
                                     </div>
@@ -177,13 +177,13 @@ export default function TrackComplaintPage() {
 
                             {/* Status Timeline */}
                             {result.status_history && result.status_history.length > 0 && (
-                                <Card className="p-6">
-                                    <h3 className="mb-4 font-semibold">Status History</h3>
+                                <Card className="p-4 sm:p-6">
+                                    <h3 className="mb-4 text-base sm:text-lg font-semibold">Status History</h3>
                                     <div className="space-y-4">
                                         {result.status_history.map((history, index) => (
-                                            <div key={history.id} className="flex gap-4">
-                                                <div className="flex flex-col items-center">
-                                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                                            <div key={history.id} className="flex gap-3 sm:gap-4">
+                                                <div className="flex flex-col items-center flex-shrink-0">
+                                                    <div className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
                                                         {result.status_history.length - index}
                                                     </div>
                                                     {index < result.status_history.length - 1 && (
@@ -209,9 +209,9 @@ export default function TrackComplaintPage() {
 
                             {/* Evidence Files */}
                             {result.evidence_files && result.evidence_files.length > 0 && (
-                                <Card className="p-6">
-                                    <h3 className="mb-4 font-semibold">Evidence Files</h3>
-                                    <div className="grid gap-4 sm:grid-cols-2">
+                                <Card className="p-4 sm:p-6">
+                                    <h3 className="mb-4 text-base sm:text-lg font-semibold">Evidence Files</h3>
+                                    <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
                                         {result.evidence_files.map((file) => (
                                             <a
                                                 key={file.id}
@@ -242,9 +242,9 @@ export default function TrackComplaintPage() {
                                 </Card>
                             )}
                         </div>
-                        <div className="mt-8 flex justify-center">
-                            <a href="/complaint">
-                                <Button className="rounded-xl bg-[#1f3a8a] px-8 py-4 text-lg font-semibold text-white hover:bg-[#1e40af] transition-all w-64">
+                        <div className="mt-6 sm:mt-8 flex justify-center px-4">
+                            <a href="/complaint" className="w-full sm:w-auto">
+                                <Button className="rounded-xl bg-[#1f3a8a] px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white hover:bg-[#1e40af] active:bg-[#1e3a8a] transition-all w-full sm:w-64 touch-manipulation">
                                     File Another Complaint
                                 </Button>
                             </a>

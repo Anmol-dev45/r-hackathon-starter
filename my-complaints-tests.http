@@ -1,0 +1,31 @@
+# Test User-Specific Complaints API
+
+### 1. Get current user's complaints (requires authentication)
+GET http://localhost:3000/api/complaints/my-complaints
+Cookie: sb-access-token=YOUR_TOKEN_HERE
+
+###
+
+### 2. Get current user's complaints with pagination
+GET http://localhost:3000/api/complaints/my-complaints?page=1&limit=10
+Cookie: sb-access-token=YOUR_TOKEN_HERE
+
+###
+
+### 3. Get current user's complaints filtered by status
+GET http://localhost:3000/api/complaints/my-complaints?status=submitted
+Cookie: sb-access-token=YOUR_TOKEN_HERE
+
+###
+
+### 4. Get resolved complaints only
+GET http://localhost:3000/api/complaints/my-complaints?status=resolved
+Cookie: sb-access-token=YOUR_TOKEN_HERE
+
+###
+
+### 5. Sort by updated_at ascending
+GET http://localhost:3000/api/complaints/my-complaints?sort_by=updated_at&sort_order=asc
+Cookie: sb-access-token=YOUR_TOKEN_HERE
+
+###
