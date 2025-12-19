@@ -148,52 +148,111 @@ export default function Home() {
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="relative z-10 w-full px-6 py-20 text-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              {/* Left side - Main content in F pattern */}
+              <div className="lg:col-span-7 space-y-6">
+                <div>
+                  <h2 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
+                    Citizen Grievance & <br />
+                    <span className="text-blue-300">Transparency Portal</span>
+                  </h2>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 text-white">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-              Citizen Grievance & <br /> Transparency Portal
-            </h2>
+                  <p className="text-lg text-gray-200 mb-8 max-w-2xl leading-relaxed">
+                    Report issues, track government projects, and hold authorities
+                    accountable — all in one place.
+                  </p>
+                </div>
 
-            <p className="text-lg text-gray-200 mb-8 max-w-xl">
-              Report issues, track government projects, and hold authorities
-              accountable — all in one place.
-            </p>
+                <div className="flex gap-4 flex-wrap">
+                  <Link
+                    href="/complaint"
+                    className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-md font-semibold transition transform hover:scale-105 text-white"
+                  >
+                    Submit Complaint
+                  </Link>
 
-            <div className="flex gap-4 flex-wrap">
-              <Link
-                href="/complaint"
-                className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-md font-semibold transition"
-              >
-                Submit Complaint
-              </Link>
+                  <Link
+                    href="/track"
+                    className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 rounded-md font-semibold transition transform hover:scale-105"
+                  >
+                    Track Complaint
+                  </Link>
+                </div>
+              </div>
 
-              <Link
-                href="/track"
-                className="border border-white px-8 py-3 rounded-md font-semibold hover:bg-white hover:text-blue-700 transition"
-              >
-                Track Complaint
-              </Link>
+              {/* Right side - Can be empty or add visual element */}
+              <div className="lg:col-span-5 hidden lg:block">
+                {/* Optional: Add some visual element here if needed */}
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* STATS */}
-          <div className="grid grid-cols-2 gap-6">
+      {/* STATS */}
+      <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-16 -mt-16 relative z-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Platform Impact</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">Real-time statistics showing our commitment to transparent and efficient governance</p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { label: "Complaints Received", value: "1,245" },
-              { label: "Resolved", value: "830" },
-              { label: "Avg Time", value: "14 Days" },
-              { label: "Ministries", value: "18" },
+              {
+                label: "Complaints Received",
+                value: "1,245",
+                icon: "📋",
+                color: "from-blue-500 to-blue-600",
+                bgColor: "from-blue-50 to-blue-100"
+              },
+              {
+                label: "Resolved",
+                value: "830",
+                icon: "✅",
+                color: "from-green-500 to-green-600",
+                bgColor: "from-green-50 to-green-100"
+              },
+              {
+                label: "Avg Resolution Time",
+                value: "14 Days",
+                icon: "⏱️",
+                color: "from-purple-500 to-purple-600",
+                bgColor: "from-purple-50 to-purple-100"
+              },
+              {
+                label: "Ministries Connected",
+                value: "18",
+                icon: "🏛️",
+                color: "from-orange-500 to-orange-600",
+                bgColor: "from-orange-50 to-orange-100"
+              },
             ].map((item, i) => (
               <div
                 key={i}
-                className="bg-white/10 backdrop-blur border border-white/20 rounded-xl p-6 text-center"
+                className="group bg-white/80 backdrop-blur-sm shadow-lg border border-white/50 rounded-2xl p-6 text-center hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 transform"
               >
-                <p className="text-3xl font-bold">{item.value}</p>
-                <p className="text-sm text-gray-200 mt-1">{item.label}</p>
+                <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${item.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                  <span className="text-2xl">{item.icon}</span>
+                </div>
+                <p className={`text-4xl font-bold bg-gradient-to-r ${item.color} bg-clip-text text-transparent mb-2`}>
+                  {item.value}
+                </p>
+                <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors">
+                  {item.label}
+                </p>
               </div>
             ))}
+          </div>
+
+          {/* Additional visual element */}
+          <div className="mt-12 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-white/50">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm text-gray-600">Live updates every 5 minutes</span>
+            </div>
           </div>
         </div>
       </section>
@@ -381,19 +440,18 @@ export default function Home() {
 
       {/* Government Notice */}
       <section className="bg-yellow-50 border-t border-yellow-200">
-        <div className="max-w-7xl mx-auto px-6 py-6 text-sm text-gray-800">
+        <div className="max-w-7xl mx-auto px-5 py-4 text-sm text-gray-800">
           <strong>Notice:</strong> False or misleading complaints are punishable under
           prevailing laws of Nepal.
         </div>
       </section>
       {/* Footer */}
       <footer className="bg-[#0b1c2d] text-gray-300 text-sm">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between gap-2">
+        <div className="max-w-7xl mx-auto px-5 py-4 flex flex-col md:flex-row justify-between gap-2">
           <span>© 2025 Government of Nepal</span>
           <span>Transparency • Accountability • Citizen Empowerment</span>
         </div>
       </footer>
-
     </div>
   );
 }
