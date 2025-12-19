@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { DashboardAuthCheck } from "./auth-check";
+import { HideNavbar } from "./hide-navbar";
 
 export default function DashboardLayout({
     children,
@@ -7,9 +8,14 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <Suspense fallback={<DashboardLoadingFallback />}>
-            <DashboardAuthCheck>{children}</DashboardAuthCheck>
-        </Suspense>
+        <>
+            <HideNavbar />
+            <div className="fixed inset-0 bg-white overflow-auto">
+                <Suspense fallback={<DashboardLoadingFallback />}>
+                    <DashboardAuthCheck>{children}</DashboardAuthCheck>
+                </Suspense>
+            </div>
+        </>
     );
 }
 
