@@ -15,7 +15,7 @@ export function ContactSection({ email, phone, onEmailChange, onPhoneChange }: C
     return (
         <div className="space-y-4">
             <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">📧 Email Address</Label>
                 <Input
                     id="email"
                     type="email"
@@ -24,12 +24,12 @@ export function ContactSection({ email, phone, onEmailChange, onPhoneChange }: C
                     onChange={(e) => onEmailChange(e.target.value)}
                 />
                 <p className="text-xs text-muted-foreground">
-                    We may use this to follow up on your complaint
+                    We'll send you updates about your complaint here
                 </p>
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
+                <Label htmlFor="phone">📱 Phone Number</Label>
                 <Input
                     id="phone"
                     type="tel"
@@ -38,7 +38,7 @@ export function ContactSection({ email, phone, onEmailChange, onPhoneChange }: C
                     onChange={(e) => onPhoneChange(e.target.value)}
                 />
                 <p className="text-xs text-muted-foreground">
-                    Optional - for urgent follow-ups
+                    In case we need to reach you quickly
                 </p>
             </div>
         </div>

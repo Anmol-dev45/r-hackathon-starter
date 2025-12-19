@@ -175,14 +175,14 @@ export default function ComplaintFormPage() {
   const stepLabels = ['Identity', 'Details', 'Evidence', 'Success'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-6 sm:py-8 md:py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-white py-6 sm:py-8 md:py-12 px-4">
       <div className="mx-auto max-w-3xl">
         <div className="mb-6 sm:mb-8 text-center">
-          <h1 className="mb-2 text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground font-merriweather">
-            Submit a Complaint
+          <h1 className="mb-3 text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+            Submit Your Complaint
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
-            Report issues and hold public officials accountable
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
+            Report problems with government services or public officials. We'll help get your issue resolved.
           </p>
         </div>
 
@@ -258,9 +258,12 @@ export default function ComplaintFormPage() {
 
         {loading && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg text-center max-w-sm w-full">
-              <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-blue-500 mx-auto mb-4" />
-              <p className="text-base sm:text-lg font-semibold">Submitting your complaint...</p>
+            <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-blue-600 mx-auto mb-4" />
+              <p className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                Submitting your complaint...
+              </p>
+              <p className="text-sm text-gray-600">Please wait, this will only take a moment</p>
             </div>
           </div>
         )}

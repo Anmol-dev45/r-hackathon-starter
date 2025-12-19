@@ -27,28 +27,31 @@ export function IdentityStep({
         {
             type: 'anonymous' as SubmissionType,
             icon: Shield,
-            title: 'Anonymous',
-            description: 'Submit without any identity. Maximum privacy.',
+            title: 'Keep Me Anonymous',
+            description: 'Your name won\'t be shown. Complete privacy.',
         },
         {
             type: 'pseudonymous' as SubmissionType,
             icon: User,
-            title: 'Pseudonymous',
-            description: 'Use a pseudonym. Balance between privacy and identity.',
+            title: 'Use a Nickname',
+            description: 'Choose a name to use instead of your real name.',
         },
         {
             type: 'verified' as SubmissionType,
             icon: BadgeCheck,
-            title: 'Verified (Login Required)',
-            description: 'Submit with your account. Most credibility.',
+            title: 'Use My Real Name',
+            description: 'Submit with your account. More trusted by officials.',
         },
     ];
 
     return (
-        <Card className="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8">
-            <h2 className="mb-4 sm:mb-6 md:mb-8 text-xl sm:text-2xl font-bold tracking-tight text-foreground font-merriweather">
-                Choose Identity Type
-            </h2>
+        <Card className="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8 border-gray-200 shadow-lg">
+            <div>
+                <h2 className="mb-2 text-xl sm:text-2xl font-bold text-gray-900">
+                    How would you like to file this complaint?
+                </h2>
+                <p className="text-sm text-gray-600">Choose how you want to identify yourself</p>
+            </div>
 
             <div className="space-y-4 sm:space-y-6">
                 {identityOptions.map(({ type, icon: Icon, title, description }) => (
