@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 
-export function HideNavbar() {
+function HideNavbar() {
     useEffect(() => {
-        // Hide the root navbar when dashboard is mounted
+        // Hide the root navbar when project page is mounted
         const navbar = document.getElementById('main-navbar');
         if (navbar) {
             (navbar as HTMLElement).style.display = 'none';
@@ -20,4 +20,17 @@ export function HideNavbar() {
     }, []);
 
     return null;
+}
+
+export default function ProjectsLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    return (
+        <>
+            <HideNavbar />
+            {children}
+        </>
+    );
 }
