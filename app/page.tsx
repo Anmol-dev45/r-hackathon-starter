@@ -137,22 +137,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
 
-      {/* Navbar */}
-      <nav className="bg-[#102a43] border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">
-            Gunaaso<span className="text-blue-400">Nepal</span>
-          </h1>
 
-          <div className="flex gap-6 text-sm font-medium">
-            <Link href="/" className="text-white hover:text-blue-300">Home</Link>
-            <Link href="/complaint" className="text-white hover:text-blue-300">File Complaint</Link>
-            <Link href="/track" className="text-white hover:text-blue-300">Track</Link>
-            <Link href="/dashboard" className="text-white hover:text-blue-300">Dashboard</Link>
-            <Link href="/auth/login" className="text-white hover:text-blue-300 text-sm font-medium">Login</Link>
-          </div>
-        </div>
-      </nav>
 
       {/* Hero */}
       <section
@@ -387,7 +372,7 @@ export default function Home() {
               href="/dashboard"
               className="border-2 border-white text-white px-8 py-3 rounded-md font-semibold hover:bg-white hover:text-blue-700 transition-colors"
             >
-              
+
               Join the Community
             </Link>
           </div>
@@ -404,7 +389,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-[#0b1c2d] text-gray-300 text-sm">
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between gap-2">
-          <span>© {new Date().getFullYear()} Government of Nepal</span>
+          <span>© 2025 Government of Nepal</span>
           <span>Transparency • Accountability • Citizen Empowerment</span>
         </div>
       </footer>
