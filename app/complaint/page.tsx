@@ -1,7 +1,8 @@
 'use client';
 
 // Refactored Complaint Submission Form - GunaasoNepal
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import type { SubmissionType, ComplaintCategory } from '@/lib/types/database';
 import { ProgressIndicator } from '@/components/complaint/progress-indicator';
 import { IdentityStep } from '@/components/complaint/identity-step';
@@ -12,6 +13,7 @@ import { Alert } from '@/components/ui/alert';
 
 
 export default function ComplaintFormPage() {
+  const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -37,6 +39,14 @@ export default function ComplaintFormPage() {
     name: string;
     category: string;
   } | null>(null);
+
+  // Set initial category from URL params
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      setCategory(categoryParam);
+    }
+  }, [searchParams]);
 
   // Reset form to initial state
   const resetForm = () => {
