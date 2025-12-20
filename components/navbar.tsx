@@ -11,7 +11,7 @@ interface SearchResult {
   type: string;
   url: string;
 }
-
+  
 export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");

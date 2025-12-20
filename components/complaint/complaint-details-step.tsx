@@ -106,12 +106,11 @@ export function ComplaintDetailsStep({
             newErrors.category = 'Please select a category';
         }
 
-        if (includeLocation) {
-            if (!province) newErrors.location = 'Province is required when location is included';
-            if (!district) newErrors.location = 'District is required when location is included';
-            if (!municipality) newErrors.location = 'Municipality is required when location is included';
-            if (!ward) newErrors.location = 'Ward is required when location is included';
-        }
+        // Location is now required
+        if (!province) newErrors.location = 'Province is required';
+        if (!district) newErrors.location = 'District is required';
+        if (!municipality) newErrors.location = 'Municipality is required';
+        if (!ward) newErrors.location = 'Ward is required';
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -187,9 +186,9 @@ export function ComplaintDetailsStep({
                     />
                     <div>
                         <Label htmlFor="includeLocation" className="cursor-pointer font-semibold">
-                            Add location where problem occurred (optional)
+                            Add location where problem occurred *
                         </Label>
-                        <p className="text-xs text-gray-500 mt-1">Helps us forward to the right office</p>
+                        <p className="text-xs text-gray-500 mt-1">Required to help us forward to the right office</p>
                     </div>
                 </div>
 

@@ -14,6 +14,7 @@ interface IdentityStepProps {
     pseudonym: string;
     setPseudonym: (value: string) => void;
     onNext: () => void;
+    onValidationError?: (error: string) => void;
 }
 
 export function IdentityStep({
@@ -22,6 +23,7 @@ export function IdentityStep({
     pseudonym,
     setPseudonym,
     onNext,
+    onValidationError,
 }: IdentityStepProps) {
     const identityOptions = [
         {
@@ -43,6 +45,26 @@ export function IdentityStep({
             description: 'Submit with your account. More trusted by officials.',
         },
     ];
+
+    const handleContinue = () => {
+        // Validate pseudonym if pseudonymous submission is selected
+        if (submissionType === 'pseudonymous') {
+            if (!pseudonym.trim()) {
+                onValidationError?.('Please enter a pseudonym to continue.');
+                return;
+            }
+            if (pseudonym.trim().length < 3) {
+                onValidationError?.('Pseudonym must be at least 3 characters long.');
+                return;
+            }
+            if (pseudonym.length > 100) {
+                onValidationError?.('Pseudonym must not exceed 100 characters.');
+                return;
+            }
+        }
+
+        onNext();
+    };
 
     return (
         <Card className="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8 border-gray-200 shadow-lg">
@@ -82,13 +104,14 @@ export function IdentityStep({
                         {/* Pseudonym Input */}
                         {submissionType === 'pseudonymous' && type === 'pseudonymous' && (
                             <div className="ml-11 mt-4">
-                                <Label htmlFor="pseudonym">Choose a pseudonym</Label>
+                                <Label htmlFor="pseudonym">Choose a pseudonym <span className="text-red-500">*</span></Label>
                                 <Input
                                     id="pseudonym"
                                     type="text"
                                     placeholder="e.g., ConcernedCitizen123"
                                     value={pseudonym}
                                     onChange={(e) => setPseudonym(e.target.value)}
+                                    required
                                     className="mt-1"
                                 />
                             </div>
@@ -97,7 +120,7 @@ export function IdentityStep({
                 ))}
             </div>
 
-            <Button onClick={onNext} className="mt-6 sm:mt-8 w-full h-11 sm:h-12 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold text-base sm:text-lg touch-manipulation">
+            <Button onClick={handleContinue} className="mt-6 sm:mt-8 w-full h-11 sm:h-12 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold text-base sm:text-lg touch-manipulation">
                 Continue →
             </Button>
         </Card>

@@ -359,14 +359,14 @@ export default function DashboardPage() {
 
       {/* ================= Sidebar ================= */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-40 w-72 bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900 text-gray-200 p-6 flex flex-col transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`fixed lg:static inset-y-0 left-0 z-40 w-72 bg-gradient-to-b from-gray-50 to-blue-50 text-gray-900 p-6 flex flex-col transform transition-transform duration-300 ease-in-out border-r border-gray-200 ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           }`}
       >
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-2">
-            Gunaaso<span className="text-blue-300">Nepal</span>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-blue-600 bg-clip-text text-transparent mb-2">
+            Gunaaso<span className="text-blue-600">Nepal</span>
           </h1>
-          <p className="text-xs text-gray-300">Citizen Complaint Portal</p>
+          <p className="text-xs text-gray-600">Citizen Complaint Portal</p>
         </div>
 
         <nav className="flex-1 space-y-2">
@@ -394,17 +394,32 @@ export default function DashboardPage() {
               document.getElementById("complaints-list")?.scrollIntoView({ behavior: "smooth" });
               setSidebarOpen(false);
             }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all"
           >
             <FileText className="h-5 w-5" />
             <span>My Complaints</span>
           </button>
 
+          <button
+            onClick={async () => {
+              const { createClient } = await import("@/lib/supabase/client");
+              const supabase = createClient();
+              await supabase.auth.signOut();
+              router.push("/");
+              router.refresh();
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-700 transition-all"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            <span>Logout</span>
+          </button>
 
         </nav>
 
-        <div className="mt-auto pt-6 border-t border-blue-700">
-          <div className="text-xs text-gray-400">
+        <div className="mt-auto pt-6 border-t border-gray-200">
+          <div className="text-xs text-gray-500">
             <p>© 2025 GunaasoNepal</p>
             <p className="mt-1">Version 2.0</p>
           </div>
@@ -943,7 +958,7 @@ function NavLink({ href, icon, label, active, onClick }: NavLinkProps) {
       onClick={onClick}
       className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${active
         ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
-        : "text-gray-300 hover:bg-white/10 hover:text-white"
+        : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
         }`}
     >
       {icon}

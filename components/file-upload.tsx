@@ -21,13 +21,20 @@ export function FileUpload({ onFilesChange, maxFiles = 5, maxSize = 50 }: FileUp
         'image/jpg',
         'image/png',
         'image/webp',
+        'image/heic',
         'audio/mpeg',
         'audio/mp3',
         'audio/wav',
+        'audio/ogg',
+        'audio/m4a',
         'video/mp4',
+        'video/mpeg',
+        'video/quicktime',
+        'video/webm',
         'application/pdf',
         'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'text/plain',
     ];
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,7 +105,7 @@ export function FileUpload({ onFilesChange, maxFiles = 5, maxSize = 50 }: FileUp
 
             {/* Help Text */}
             <p className="text-xs text-muted-foreground">
-                Accepted: Images, Audio, Video, PDF, Documents (max {maxSize}MB per file, up to {maxFiles} files)
+                Accepted: Images (JPG, PNG, WebP, HEIC), Audio (MP3, WAV, OGG, M4A), Video (MP4, WebM), Documents (PDF, DOC, DOCX, TXT) - max {maxSize}MB per file, up to {maxFiles} files
             </p>
 
             {/* Error */}
