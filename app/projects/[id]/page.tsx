@@ -32,6 +32,8 @@ interface Project {
   updated_at?: string;
 }
 
+export const dynamic = 'force-dynamic';
+
 export default function ProjectDetailPage() {
   const params = useParams();
   const id = params.id as string;
@@ -449,22 +451,22 @@ export default function ProjectDetailPage() {
                   <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
                   <span className="font-semibold text-blue-900">Created</span>
                 </div>
-                <p className="text-blue-800 font-medium">{new Date(project.created_at).toLocaleDateString('en-US', {
+                <p className="text-blue-800 font-medium">{project.created_at ? new Date(project.created_at).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
-                })}</p>
+                }) : 'N/A'}</p>
               </div>
               <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-3 h-3 bg-green-600 rounded-full"></div>
                   <span className="font-semibold text-green-900">Last Updated</span>
                 </div>
-                <p className="text-green-800 font-medium">{new Date(project.updated_at).toLocaleDateString('en-US', {
+                <p className="text-green-800 font-medium">{project.updated_at ? new Date(project.updated_at).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
-                })}</p>
+                }) : 'N/A'}</p>
               </div>
             </div>
           </div>

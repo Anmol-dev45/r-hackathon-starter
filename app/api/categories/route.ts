@@ -5,6 +5,8 @@ import { createClient } from '@/lib/supabase/server';
 import type { GetCategoriesResponse, ErrorResponse } from '@/lib/types/database';
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
     request: NextRequest
 ): Promise<NextResponse<GetCategoriesResponse | ErrorResponse>> {

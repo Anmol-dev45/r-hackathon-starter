@@ -1,7 +1,7 @@
 'use client';
 
 // Refactored Complaint Submission Form - GunaasoNepal
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IconChevronLeft, IconHome } from '@tabler/icons-react';
@@ -15,7 +15,7 @@ import { SuccessStep } from '@/components/complaint/success-step';
 import { Alert } from '@/components/ui/alert';
 
 
-export default function ComplaintFormPage() {
+function ComplaintFormPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -306,5 +306,17 @@ export default function ComplaintFormPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ComplaintFormPageWrapper() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-blue-600"></div>
+      </div>
+    }>
+      <ComplaintFormPage />
+    </Suspense>
   );
 }
