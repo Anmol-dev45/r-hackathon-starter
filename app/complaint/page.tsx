@@ -29,7 +29,7 @@ function ComplaintFormPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<string>('corruption');
-  const [includeLocation, setIncludeLocation] = useState(false);
+  const [includeLocation, setIncludeLocation] = useState(true);
   const [province, setProvince] = useState('');
   const [district, setDistrict] = useState('');
   const [municipality, setMunicipality] = useState('');
@@ -63,7 +63,7 @@ function ComplaintFormPage() {
     setTitle('');
     setDescription('');
     setCategory('corruption');
-    setIncludeLocation(false);
+    setIncludeLocation(true);
     setProvince('');
     setDistrict('');
     setMunicipality('');
@@ -243,6 +243,7 @@ function ComplaintFormPage() {
               pseudonym={pseudonym}
               setPseudonym={setPseudonym}
               onNext={() => setStep(2)}
+              onValidationError={(errorMessage) => setError(errorMessage)}
             />
           )}
 
