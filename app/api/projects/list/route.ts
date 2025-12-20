@@ -1,74 +1,46 @@
 // API route for listing public projects
 // GET /api/projects/list?district=Kathmandu&status=ongoing&page=1&limit=20
 
-import { createClient } from '@/lib/supabase/server';
-import type {
-    ListPublicProjectsResponse,
-    ErrorResponse,
-} from '@/lib/types/database';
-import { parsePaginationParams, calculateOffset } from '@/lib/utils/validation';
 import { NextRequest, NextResponse } from 'next/server';
+import projectsData from '@/lib/data/projects.json';
 
-export async function GET(
-    request: NextRequest
-): Promise<NextResponse<ListPublicProjectsResponse | ErrorResponse>> {
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: NextRequest) {
     try {
-        const supabase = await createClient();
         const { searchParams } = new URL(request.url);
 
         // Parse query parameters
         const district = searchParams.get('district');
         const projectType = searchParams.get('project_type');
         const status = searchParams.get('status');
+        const page = parseInt(searchParams.get('page') || '1');
+        const limit = parseInt(searchParams.get('limit') || '20');
 
-        const { page, limit } = parsePaginationParams(
-            searchParams.get('page') ?? undefined,
-            searchParams.get('limit') ?? undefined
-        );
+        // Filter projects
+        let filteredProjects = [...projectsData];
 
-        // Build query
-        let query = supabase
-            .from('public_projects')
-            .select('*', { count: 'exact' });
-
-        // Apply filters
         if (district) {
-            query = query.eq('district', district);
+            filteredProjects = filteredProjects.filter(p => p.district === district);
         }
 
         if (projectType) {
-            query = query.eq('project_type', projectType);
+            filteredProjects = filteredProjects.filter(p => p.project_type === projectType);
         }
 
         if (status) {
-            query = query.eq('status', status);
+            filteredProjects = filteredProjects.filter(p => p.status === status);
         }
 
-        // Apply sorting and pagination
-        const offset = calculateOffset(page, limit);
-        query = query
-            .order('created_at', { ascending: false })
-            .range(offset, offset + limit - 1);
-
-        // Execute query
-        const { data: projects, error, count } = await query;
-
-        if (error) {
-            console.error('Error fetching projects:', error);
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'Database error',
-                    message: 'Failed to fetch public projects',
-                },
-                { status: 500 }
-            );
-        }
+        // Pagination
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        const paginatedProjects = filteredProjects.slice(startIndex, endIndex);
 
         return NextResponse.json({
             success: true,
-            projects: projects || [],
-            total: count || 0,
+            projects: paginatedProjects,
+            total: filteredProjects.length,
             page,
             limit,
         });

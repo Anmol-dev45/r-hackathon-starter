@@ -59,9 +59,7 @@ export function StatCard({
     const colors = colorClasses[color];
 
     return (
-        <div className="group relative overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className={`absolute inset-0 bg-gradient-to-br ${colors.bg} opacity-50 group-hover:opacity-70 transition-opacity`} />
-
+        <div className="group relative overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300">
             <div className="relative p-6">
                 <div className="flex items-start justify-between mb-4">
                     <div className={`p-3 rounded-xl bg-white shadow-sm ${colors.icon}`}>
