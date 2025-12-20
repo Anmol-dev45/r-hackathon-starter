@@ -73,7 +73,7 @@ export function CategorySelector({ value, onChange }: CategorySelectorProps) {
 
     return (
         <div className="space-y-2">
-            <Label htmlFor="category">📂 What type of problem is this? *</Label>
+            <Label htmlFor="category">📂 What category does this fall under? *</Label>
             <Select value={value} onValueChange={onChange}>
                 <SelectTrigger id="category">
                     <SelectValue placeholder="Choose the category that best matches your complaint" />
@@ -89,11 +89,6 @@ export function CategorySelector({ value, onChange }: CategorySelectorProps) {
                     ))}
                 </SelectContent>
             </Select>
-            {selectedCategory && (
-                <p className="text-sm text-muted-foreground mt-1">
-                    {selectedCategory.description}
-                </p>
-            )}
         </div>
     );
 }

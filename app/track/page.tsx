@@ -139,7 +139,7 @@ function TrackComplaintPage() {
                                     Format: GN-YYYY-XXXXXX (e.g., GN-2025-A3B7F1)
                                 </p>
                             </div>
-                            <Button type="submit" className="w-full h-11 sm:h-12 text-base sm:text-lg touch-manipulation" disabled={loading}>
+                            <Button type="submit" className="w-full h-11 sm:h-12 text-base sm:text-lg touch-manipulation bg-blue-600 hover:bg-blue-700 text-white font-semibold transition transform hover:scale-105" disabled={loading}>
                                 {loading ? <LoadingInline message="Searching..." /> : '🔍 Track Complaint'}
                             </Button>
                         </form>
@@ -269,7 +269,7 @@ function TrackComplaintPage() {
                             </div>
                             <div className="mt-6 sm:mt-8 flex justify-center px-4">
                                 <a href="/complaint" className="w-full sm:w-auto">
-                                    <Button className="rounded-xl bg-[#1f3a8a] px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white hover:bg-[#1e40af] active:bg-[#1e3a8a] transition-all w-full sm:w-64 touch-manipulation">
+                                    <Button className="rounded-lg bg-blue-600 hover:bg-blue-700 px-6 py-2 text-sm font-semibold text-white transition transform hover:scale-105 w-full sm:w-64 touch-manipulation">
                                         File Another Complaint
                                     </Button>
                                 </a>
