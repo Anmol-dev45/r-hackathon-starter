@@ -64,7 +64,10 @@ interface Stats {
 export default function DashboardPage() {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'complaints' | 'projects'>('complaints');
   const [complaints, setComplaints] = useState<Complaint[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [projectsLoading, setProjectsLoading] = useState(false);
   const [stats, setStats] = useState<Stats>({
     total: 0,
     resolved: 0,
@@ -81,6 +84,23 @@ export default function DashboardPage() {
   const [sortBy, setSortBy] = useState<"date" | "status" | "category">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [showFilters, setShowFilters] = useState(false);
+
+  // Fetch projects
+  const fetchProjects = async () => {
+    try {
+      setProjectsLoading(true);
+      const response = await fetch('/api/projects/list?limit=100');
+      const data = await response.json();
+
+      if (data.success) {
+        setProjects(data.projects);
+      }
+    } catch (err) {
+      console.error('Error fetching projects:', err);
+    } finally {
+      setProjectsLoading(false);
+    }
+  };
 
   // Fetch user's complaints
   const fetchComplaints = async () => {
@@ -133,7 +153,13 @@ export default function DashboardPage() {
           (c: Complaint) => c.status === "under_review"
         ).length;
 
-        setStats(prev => ({ ...prev, total, resolved, pending, underReview }));
+        setStats({
+          ...stats,
+          total,
+          resolved,
+          pending,
+          underReview
+        });
       }
     } catch (err) {
       console.error("Error fetching complaints:", err);
@@ -148,6 +174,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchComplaints();
+    fetchProjects();
   }, []);
 
   const handleRefresh = () => {
@@ -312,7 +339,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
+    <div className="flex min-h-screen bg-gray-100">
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -332,14 +359,14 @@ export default function DashboardPage() {
 
       {/* ================= Sidebar ================= */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-40 w-72 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-gray-200 p-6 flex flex-col transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`fixed lg:static inset-y-0 left-0 z-40 w-72 bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900 text-gray-200 p-6 flex flex-col transform transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           }`}
       >
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white mb-2">
-            Gunaaso<span className="text-blue-400">Nepal</span>
+            Gunaaso<span className="text-blue-300">Nepal</span>
           </h1>
-          <p className="text-xs text-gray-400">Citizen Complaint Portal</p>
+          <p className="text-xs text-gray-300">Citizen Complaint Portal</p>
         </div>
 
         <nav className="flex-1 space-y-2">
@@ -373,22 +400,11 @@ export default function DashboardPage() {
             <span>My Complaints</span>
           </button>
 
-          <div className="pt-4 mt-4 border-t border-gray-700">
-            <div className="px-4 py-3 bg-blue-900/30 rounded-xl mb-2">
-              <p className="text-xs text-gray-400 mb-1">Need help?</p>
-              <p className="text-sm text-white">Click the icons to learn what they do</p>
-            </div>
-            <NavLink
-              href="/settings"
-              icon={<Settings className="h-5 w-5" />}
-              label="Settings"
-              onClick={() => setSidebarOpen(false)}
-            />
-          </div>
+
         </nav>
 
-        <div className="mt-auto pt-6 border-t border-gray-700">
-          <div className="text-xs text-gray-500">
+        <div className="mt-auto pt-6 border-t border-blue-700">
+          <div className="text-xs text-gray-400">
             <p>© 2025 GunaasoNepal</p>
             <p className="mt-1">Version 2.0</p>
           </div>
@@ -396,9 +412,9 @@ export default function DashboardPage() {
       </aside>
 
       {/* ================= Main Content ================= */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto lg:ml-0">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pt-16 lg:pt-0">
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               नमस्ते! Welcome 👋
@@ -408,7 +424,7 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <button
               onClick={handleRefresh}
               disabled={refreshing}
@@ -426,7 +442,7 @@ export default function DashboardPage() {
 
         {/* Help Banner for first time users */}
         {stats.total === 0 && !loading && (
-          <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6">
+          <div className="mb-6 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               Welcome to GunaasoNepal! 🎉
             </h3>
@@ -522,7 +538,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Insights */}
-          <div className="lg:col-span-1 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 shadow-sm border border-blue-200">
+          <div className="lg:col-span-1 bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-blue-600" />
               Helpful Tips
@@ -531,278 +547,386 @@ export default function DashboardPage() {
             <InsightsCard insights={insights} loading={loading} />
           </div>
         </div>
-        {/* Complaints List */}
-        <div id="complaints-list" className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900">
-                All My Complaints
-              </h3>
-              <p className="text-sm text-gray-600 mt-1">
-                View and check the status of complaints you've filed
-              </p>
-            </div>
-            <div className="hidden sm:block">
-              <ExportMenu onExport={handleExport} />
-            </div>
+
+        {/* Tab Navigation */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-1 mb-6">
+          <div className="flex gap-2">
+            <button
+              onClick={() => setActiveTab('complaints')}
+              className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === 'complaints'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-gray-600 hover:bg-gray-50'
+                }`}
+            >
+              📋 My Complaints
+            </button>
+            <button
+              onClick={() => setActiveTab('projects')}
+              className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all ${activeTab === 'projects'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-gray-600 hover:bg-gray-50'
+                }`}
+            >
+              🏗️ Government Projects
+            </button>
           </div>
+        </div>
 
-          {/* Filters */}
-          <div className="mb-6 space-y-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="relative flex-1 min-w-[250px]">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input
-                  placeholder="Search by ID, title, or location..."
-                  value={searchFilter}
-                  onChange={(e) => setSearchFilter(e.target.value)}
-                  className="h-11 w-full rounded-xl border border-gray-300 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  title="Type to search your complaints"
-                />
-                {searchFilter && (
-                  <button
-                    onClick={() => setSearchFilter("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
+        {/* Complaints List */}
+        {activeTab === 'complaints' && (
+          <div id="complaints-list" className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  All My Complaints
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  View and check the status of complaints you've filed
+                </p>
               </div>
-
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center gap-2 px-4 h-11 rounded-xl border transition-all ${showFilters
-                  ? "bg-blue-50 border-blue-500 text-blue-700"
-                  : "border-gray-300 text-gray-700 hover:bg-gray-50"
-                  }`}
-              >
-                <Filter className="h-4 w-4" />
-                Filters
-                {(statusFilter !== "all" || categoryFilter !== "all") && (
-                  <span className="ml-1 px-2 py-0.5 bg-blue-600 text-white text-xs rounded-full">
-                    {(statusFilter !== "all" ? 1 : 0) +
-                      (categoryFilter !== "all" ? 1 : 0)}
-                  </span>
-                )}
-              </button>
+              <div className="hidden sm:block">
+                <ExportMenu onExport={handleExport} />
+              </div>
             </div>
 
-            {/* Advanced Filters */}
-            {showFilters && (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-gray-50 rounded-xl">
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="all">All Status</option>
-                  <option value="submitted">Submitted</option>
-                  <option value="under_review">Under Review</option>
-                  <option value="forwarded">Forwarded</option>
-                  <option value="resolved">Resolved</option>
-                  <option value="rejected">Rejected</option>
-                  <option value="closed">Closed</option>
-                </select>
-
-                <select
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="all">All Categories</option>
-                  {uniqueCategories.map(cat => (
-                    <option key={cat} value={cat}>
-                      {formatCategory(cat)}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  value={sortBy}
-                  onChange={(e) =>
-                    setSortBy(e.target.value as "date" | "status" | "category")
-                  }
-                  className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="date">Sort by Date</option>
-                  <option value="status">Sort by Status</option>
-                  <option value="category">Sort by Category</option>
-                </select>
+            {/* Filters */}
+            <div className="mb-6 space-y-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="relative flex-1 min-w-[250px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    placeholder="Search by ID, title, or location..."
+                    value={searchFilter}
+                    onChange={(e) => setSearchFilter(e.target.value)}
+                    className="h-11 w-full rounded-xl border border-gray-300 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    title="Type to search your complaints"
+                  />
+                  {searchFilter && (
+                    <button
+                      onClick={() => setSearchFilter("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
 
                 <button
-                  onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-                  className="h-10 px-4 rounded-lg border border-gray-300 flex items-center justify-center gap-2 hover:bg-white transition-colors text-sm font-medium"
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`flex items-center gap-2 px-4 h-11 rounded-xl border transition-all ${showFilters
+                    ? "bg-blue-50 border-blue-500 text-blue-700"
+                    : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                    }`}
                 >
-                  {sortOrder === "asc" ? "↑ Ascending" : "↓ Descending"}
+                  <Filter className="h-4 w-4" />
+                  Filters
+                  {(statusFilter !== "all" || categoryFilter !== "all") && (
+                    <span className="ml-1 px-2 py-0.5 bg-blue-600 text-white text-xs rounded-full">
+                      {(statusFilter !== "all" ? 1 : 0) +
+                        (categoryFilter !== "all" ? 1 : 0)}
+                    </span>
+                  )}
+                </button>
+              </div>
+
+              {/* Advanced Filters */}
+              {showFilters && (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-gray-50 rounded-xl">
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="all">All Status</option>
+                    <option value="submitted">Submitted</option>
+                    <option value="under_review">Under Review</option>
+                    <option value="forwarded">Forwarded</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="closed">Closed</option>
+                  </select>
+
+                  <select
+                    value={categoryFilter}
+                    onChange={(e) => setCategoryFilter(e.target.value)}
+                    className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="all">All Categories</option>
+                    {uniqueCategories.map(cat => (
+                      <option key={cat} value={cat}>
+                        {formatCategory(cat)}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={sortBy}
+                    onChange={(e) =>
+                      setSortBy(e.target.value as "date" | "status" | "category")
+                    }
+                    className="h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="date">Sort by Date</option>
+                    <option value="status">Sort by Status</option>
+                    <option value="category">Sort by Category</option>
+                  </select>
+
+                  <button
+                    onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+                    className="h-10 px-4 rounded-lg border border-gray-300 flex items-center justify-center gap-2 hover:bg-white transition-colors text-sm font-medium"
+                  >
+                    {sortOrder === "asc" ? "↑ Ascending" : "↓ Descending"}
+                  </button>
+                </div>
+              )}
+
+              {/* Saved Filters */}
+              <SavedFilters
+                onApplyFilter={(filter) => {
+                  setSearchFilter(filter.searchFilter);
+                  setStatusFilter(filter.statusFilter);
+                  setCategoryFilter(filter.categoryFilter);
+                }}
+              />
+            </div>
+
+            {(searchFilter || statusFilter !== "all" || categoryFilter !== "all") && (
+              <div className="mb-4 flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                <span className="text-sm text-gray-700">
+                  Showing <span className="font-semibold">{filteredComplaints.length}</span> of{" "}
+                  <span className="font-semibold">{complaints.length}</span> complaints
+                </span>
+                <button
+                  onClick={() => {
+                    setSearchFilter("");
+                    setStatusFilter("all");
+                    setCategoryFilter("all");
+                  }}
+                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Clear all filters
                 </button>
               </div>
             )}
 
-            {/* Saved Filters */}
-            <SavedFilters
-              onApplyFilter={(filter) => {
-                setSearchFilter(filter.searchFilter);
-                setStatusFilter(filter.statusFilter);
-                setCategoryFilter(filter.categoryFilter);
-              }}
-            />
+            {error && (
+              <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3 text-red-700">
+                <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                <p>{error}</p>
+              </div>
+            )}
+
+            {/* Table */}
+            <div className="rounded-xl border border-gray-200 overflow-hidden">
+              {loading ? (
+                <div className="p-12 text-center">
+                  <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600 mb-4"></div>
+                  <p className="text-gray-600">Loading your complaints...</p>
+                </div>
+              ) : filteredComplaints.length === 0 ? (
+                <div className="p-12 text-center">
+                  <FileText className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+                  <p className="text-lg font-medium text-gray-900 mb-2">
+                    {searchFilter || statusFilter !== "all" || categoryFilter !== "all"
+                      ? "No complaints found"
+                      : "You haven't filed any complaints yet"}
+                  </p>
+                  <p className="text-gray-600 mb-6">
+                    {searchFilter || statusFilter !== "all" || categoryFilter !== "all"
+                      ? "Try changing your search or filters above"
+                      : "Click the button below to report your first issue"}
+                  </p>
+                  {!(searchFilter || statusFilter !== "all" || categoryFilter !== "all") && (
+                    <button
+                      onClick={() => router.push("/complaint")}
+                      className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium text-base"
+                    >
+                      Submit Your First Complaint
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Complaint ID
+                        </th>
+                        <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          What's it about?
+                        </th>
+                        <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
+                          Type
+                        </th>
+                        <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Current Status
+                        </th>
+                        <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
+                          Sent To
+                        </th>
+                        <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden xl:table-cell">
+                          Location
+                        </th>
+                        <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">
+                          Date Filed
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody className="divide-y divide-gray-200">
+                      {filteredComplaints.map((complaint) => (
+                        <tr
+                          key={complaint.id}
+                          className="hover:bg-blue-50 transition-colors cursor-pointer"
+                          onClick={() => router.push(`/track?id=${complaint.tracking_id}`)}
+                        >
+                          <td className="px-4 py-4">
+                            <span className="font-mono text-xs font-semibold text-blue-600">
+                              {complaint.tracking_id}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4">
+                            <div className="max-w-xs">
+                              <p className="font-medium text-gray-900 truncate">
+                                {complaint.title}
+                              </p>
+                              <p className="text-xs text-gray-500 truncate mt-0.5">
+                                {complaint.description}
+                              </p>
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 hidden md:table-cell">
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              {formatCategory(complaint.category)}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4">
+                            <ComplaintStatus status={complaint.status} />
+                          </td>
+                          <td className="px-4 py-4 hidden lg:table-cell">
+                            {complaint.forwarded_to ? (
+                              <div className="text-xs">
+                                <div
+                                  className="font-medium text-gray-900 truncate max-w-[180px]"
+                                  title={complaint.forwarded_to.office_name}
+                                >
+                                  {complaint.forwarded_to.office_name}
+                                </div>
+                                <div className="text-gray-500 font-mono text-[10px] mt-0.5">
+                                  {complaint.forwarded_to.office_id}
+                                </div>
+                              </div>
+                            ) : (
+                              <span className="text-xs text-gray-400 italic">
+                                Processing...
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-4 py-4 text-xs text-gray-600 hidden xl:table-cell">
+                            {complaint.location_district ||
+                              complaint.location_province ||
+                              "N/A"}
+                          </td>
+                          <td className="px-4 py-4 text-xs text-gray-600 hidden sm:table-cell whitespace-nowrap">
+                            {formatDate(complaint.created_at)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
+        )}
 
-          {(searchFilter || statusFilter !== "all" || categoryFilter !== "all") && (
-            <div className="mb-4 flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-              <span className="text-sm text-gray-700">
-                Showing <span className="font-semibold">{filteredComplaints.length}</span> of{" "}
-                <span className="font-semibold">{complaints.length}</span> complaints
-              </span>
-              <button
-                onClick={() => {
-                  setSearchFilter("");
-                  setStatusFilter("all");
-                  setCategoryFilter("all");
-                }}
-                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Clear all filters
-              </button>
+        {/* Projects List */}
+        {activeTab === 'projects' && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Government Projects
+              </h3>
+              <p className="text-sm text-gray-600">
+                Track ongoing and completed government infrastructure projects
+              </p>
             </div>
-          )}
 
-          {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3 text-red-700">
-              <AlertCircle className="h-5 w-5 flex-shrink-0" />
-              <p>{error}</p>
-            </div>
-          )}
-
-          {/* Table */}
-          <div className="rounded-xl border border-gray-200 overflow-hidden">
-            {loading ? (
+            {projectsLoading ? (
               <div className="p-12 text-center">
                 <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600 mb-4"></div>
-                <p className="text-gray-600">Loading your complaints...</p>
+                <p className="text-gray-600">Loading projects...</p>
               </div>
-            ) : filteredComplaints.length === 0 ? (
+            ) : projects.length === 0 ? (
               <div className="p-12 text-center">
-                <FileText className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-                <p className="text-lg font-medium text-gray-900 mb-2">
-                  {searchFilter || statusFilter !== "all" || categoryFilter !== "all"
-                    ? "No complaints found"
-                    : "You haven't filed any complaints yet"}
-                </p>
-                <p className="text-gray-600 mb-6">
-                  {searchFilter || statusFilter !== "all" || categoryFilter !== "all"
-                    ? "Try changing your search or filters above"
-                    : "Click the button below to report your first issue"}
-                </p>
-                {!(searchFilter || statusFilter !== "all" || categoryFilter !== "all") && (
-                  <button
-                    onClick={() => router.push("/complaint")}
-                    className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium text-base"
-                  >
-                    Submit Your First Complaint
-                  </button>
-                )}
+                <p className="text-lg font-medium text-gray-900 mb-2">No projects found</p>
+                <p className="text-gray-600">Check back later for project updates</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Complaint ID
-                      </th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        What's it about?
-                      </th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden md:table-cell">
-                        Type
-                      </th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Current Status
-                      </th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden lg:table-cell">
-                        Sent To
-                      </th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden xl:table-cell">
-                        Location
-                      </th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">
-                        Date Filed
-                      </th>
-                    </tr>
-                  </thead>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {projects.map((project) => (
+                  <Link
+                    key={project.id}
+                    href={`/projects/${project.id}`}
+                    className="border border-gray-200 rounded-xl p-5 hover:shadow-lg transition-shadow cursor-pointer block"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <h4 className="font-semibold text-gray-900 text-base leading-tight">
+                        {project.project_name}
+                      </h4>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${project.status === 'completed' ? 'bg-green-100 text-green-700' :
+                        project.status === 'ongoing' ? 'bg-blue-100 text-blue-700' :
+                          'bg-yellow-100 text-yellow-700'
+                        }`}>
+                        {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+                      </span>
+                    </div>
 
-                  <tbody className="divide-y divide-gray-200">
-                    {filteredComplaints.map((complaint) => (
-                      <tr
-                        key={complaint.id}
-                        className="hover:bg-blue-50 transition-colors cursor-pointer"
-                        onClick={() => router.push(`/track?id=${complaint.tracking_id}`)}
-                      >
-                        <td className="px-4 py-4">
-                          <span className="font-mono text-xs font-semibold text-blue-600">
-                            {complaint.tracking_id}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4">
-                          <div className="max-w-xs">
-                            <p className="font-medium text-gray-900 truncate">
-                              {complaint.title}
-                            </p>
-                            <p className="text-xs text-gray-500 truncate mt-0.5">
-                              {complaint.description}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4 hidden md:table-cell">
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                            {formatCategory(complaint.category)}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4">
-                          <ComplaintStatus status={complaint.status} />
-                        </td>
-                        <td className="px-4 py-4 hidden lg:table-cell">
-                          {complaint.forwarded_to ? (
-                            <div className="text-xs">
-                              <div
-                                className="font-medium text-gray-900 truncate max-w-[180px]"
-                                title={complaint.forwarded_to.office_name}
-                              >
-                                {complaint.forwarded_to.office_name}
-                              </div>
-                              <div className="text-gray-500 font-mono text-[10px] mt-0.5">
-                                {complaint.forwarded_to.office_id}
-                              </div>
-                            </div>
-                          ) : (
-                            <span className="text-xs text-gray-400 italic">
-                              Processing...
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-4 py-4 text-xs text-gray-600 hidden xl:table-cell">
-                          {complaint.location_district ||
-                            complaint.location_province ||
-                            "N/A"}
-                        </td>
-                        <td className="px-4 py-4 text-xs text-gray-600 hidden sm:table-cell whitespace-nowrap">
-                          {formatDate(complaint.created_at)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      {project.description}
+                    </p>
+
+                    <div className="space-y-2 text-xs text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">Type:</span>
+                        <span>{project.project_type}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">Location:</span>
+                        <span>{project.district}, {project.province}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">Budget:</span>
+                        <span>NPR {(project.budget_allocated / 10000000).toFixed(1)} Cr</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-4">
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="text-gray-600">Progress</span>
+                        <span className="font-semibold text-gray-900">{project.progress_percentage}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full ${project.status === 'completed' ? 'bg-green-500' :
+                            project.status === 'ongoing' ? 'bg-blue-500' :
+                              'bg-yellow-500'
+                            }`}
+                          style={{ width: `${project.progress_percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
             )}
           </div>
-        </div>
+        )}
       </main>
     </div>
   );
 }
-
-/* ================= Components ================= */
 
 interface NavLinkProps {
   href: string;
@@ -829,10 +953,7 @@ function NavLink({ href, icon, label, active, onClick }: NavLinkProps) {
 }
 
 function ComplaintStatus({ status }: { status: string }) {
-  const statusMap: Record<
-    string,
-    { label: string; className: string; dotColor: string }
-  > = {
+  const statusMap: Record<string, { label: string; className: string; dotColor: string }> = {
     submitted: {
       label: "Received ✓",
       className: "bg-blue-50 text-blue-700 border-blue-200",
@@ -880,4 +1001,3 @@ function ComplaintStatus({ status }: { status: string }) {
     </span>
   );
 }
-

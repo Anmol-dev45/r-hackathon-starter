@@ -2,13 +2,33 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { IconClipboard, IconCheck, IconClock, IconBuilding, IconRoad, IconHome, IconLeaf, IconBook, IconHeartbeat, IconBolt, IconTools, IconChevronLeft, IconChevronRight, IconShield, IconUsers, IconMail, IconPhone, IconMapPin, IconHeart, IconChevronDown } from '@tabler/icons-react';
+import { createClient } from "@/lib/supabase/client";
 
 export default function Home() {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 3;
   const [currentComment, setCurrentComment] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  // Check if user is logged in and redirect to dashboard
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        router.push("/dashboard");
+      } else {
+        setIsCheckingAuth(false);
+      }
+    };
+
+    checkAuth();
+  }, [router]);
 
   // Auto-slide comments
   useEffect(() => {
@@ -193,6 +213,18 @@ export default function Home() {
     }
   };
 
+  // Show loading state while checking authentication
+  if (isCheckingAuth) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="text-center">
+          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-[#4366d0] mx-auto"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
 
@@ -304,7 +336,7 @@ export default function Home() {
         </div>
       </section>
 
-      
+
 
       {/* Government Projects */}
       <section>
