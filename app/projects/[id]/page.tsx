@@ -7,17 +7,29 @@ import { IconBuilding, IconCalendar, IconCash, IconMapPin, IconUser, IconProgres
 
 interface Project {
   id: string;
-  title: string;
+  title?: string;
+  project_name?: string;
   description?: string;
-  ministry: string;
-  budget: string;
-  timeline: string;
+  ministry?: string;
+  budget?: string;
+  timeline?: string;
   status: string;
-  progress: number;
+  progress?: number;
+  progress_percentage?: number;
   location?: string;
   contractor?: string;
-  created_at: string;
-  updated_at: string;
+  province?: string;
+  district?: string;
+  municipality?: string;
+  project_type?: string;
+  budget_allocated?: number;
+  budget_spent?: number;
+  budget_currency?: string;
+  start_date?: string;
+  expected_completion_date?: string;
+  actual_completion_date?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export default function ProjectDetailPage() {
@@ -74,7 +86,8 @@ export default function ProjectDetailPage() {
     }
   };
 
-  const getProjectIcon = (title: string) => {
+  const getProjectIcon = (title?: string) => {
+    if (!title) return <IconBuilding size={32} className="text-gray-600" />;
     if (title.includes("Ring Road") || title.includes("Highway")) return <IconBuilding size={32} className="text-blue-600" />;
     if (title.includes("Drinking Water") || title.includes("Water")) return <IconBuilding size={32} className="text-blue-600" />;
     if (title.includes("Green") || title.includes("City")) return <IconBuilding size={32} className="text-green-600" />;
@@ -308,11 +321,11 @@ export default function ProjectDetailPage() {
           <div className="flex items-start gap-6 mb-8">
             <div className="flex-shrink-0">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center border border-blue-200">
-                {getProjectIcon(project.title)}
+                {getProjectIcon(project.project_name || project.title)}
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl font-bold text-gray-900 mb-3 leading-tight">{project.title}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-3 leading-tight">{project.project_name || project.title}</h1>
               <div className="flex items-center gap-3 flex-wrap">
                 {getStatusBadge(project.status)}
                 <span className="text-gray-600 font-medium">{project.ministry}</span>
@@ -348,24 +361,26 @@ export default function ProjectDetailPage() {
                   <IconCash size={20} className="text-gray-400 mt-0.5 flex-shrink-0" />
                   <div>
                     <span className="font-semibold text-gray-700 block">Budget</span>
-                    <span className="text-gray-900 text-base font-semibold">{project.budget}</span>
+                    <span className="text-gray-900 text-base font-semibold">
+                      {project.budget || (project.budget_allocated ? `NPR ${(project.budget_allocated / 10000000).toFixed(1)} Cr` : 'N/A')}
+                    </span>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <IconCalendar size={20} className="text-gray-400 mt-0.5 flex-shrink-0" />
                   <div>
                     <span className="font-semibold text-gray-700 block">Timeline</span>
-                    <span className="text-gray-900">{project.timeline}</span>
+                    <span className="text-gray-900">{project.timeline || `${project.start_date || 'N/A'} – ${project.expected_completion_date || 'N/A'}`}</span>
                   </div>
                 </div>
               </div>
               <div className="space-y-4">
-                {project.location && (
+                {(project.location || project.district) && (
                   <div className="flex items-start gap-3">
                     <IconMapPin size={20} className="text-gray-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <span className="font-semibold text-gray-700 block">Location</span>
-                      <span className="text-gray-900">{project.location}</span>
+                      <span className="text-gray-900">{project.location || `${project.district}, ${project.province}`}</span>
                     </div>
                   </div>
                 )}
@@ -395,18 +410,18 @@ export default function ProjectDetailPage() {
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-sm font-medium text-gray-700">Overall Progress</span>
-                  <span className="text-xl font-bold text-gray-900">{project.progress}%</span>
+                  <span className="text-xl font-bold text-gray-900">{project.progress_percentage || project.progress || 0}%</span>
                 </div>
                 <div className="bg-gray-200 rounded-full h-4 overflow-hidden border border-gray-300">
                   <div
                     className={`h-full bg-gradient-to-r ${getProgressBarColor(project.status)} rounded-full transition-all duration-1000 ease-out`}
-                    style={{ width: `${project.progress}%` }}
+                    style={{ width: `${project.progress_percentage || project.progress || 0}%` }}
                   />
                 </div>
                 <p className="text-sm text-gray-600 mt-2">
                   {project.status === 'Completed' ? 'Project completed successfully' :
-                   project.status === 'Ongoing' ? 'Project is currently in progress' :
-                   'Project is in planning phase'}
+                    project.status === 'Ongoing' ? 'Project is currently in progress' :
+                      'Project is in planning phase'}
                 </p>
               </div>
 
