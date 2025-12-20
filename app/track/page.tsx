@@ -1,7 +1,7 @@
 'use client';
 
 // Track Complaint Page
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IconChevronLeft, IconHome } from '@tabler/icons-react';
@@ -16,7 +16,7 @@ import { Alert } from '@/components/ui/alert';
 import type { TrackComplaintResponse } from '@/lib/types/database';
 import { formatDateNPT } from '@/lib/utils/validation';
 
-export default function TrackComplaintPage() {
+function TrackComplaintPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [trackingId, setTrackingId] = useState('');
@@ -289,5 +289,17 @@ export default function TrackComplaintPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function TrackComplaintPageWrapper() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-blue-600"></div>
+            </div>
+        }>
+            <TrackComplaintPage />
+        </Suspense>
     );
 }
